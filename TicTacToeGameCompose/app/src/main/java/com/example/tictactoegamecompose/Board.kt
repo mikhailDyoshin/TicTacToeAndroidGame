@@ -15,8 +15,10 @@ import androidx.compose.ui.unit.sp
 import com.example.tictactoegamecompose.Minimax
 import com.example.tictactoegamecompose.R
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 
 
 @SuppressLint("MutableCollectionMutableState")
@@ -110,9 +112,10 @@ fun Board(
     }
 
     if (gameMode == "VS computer") {
-        if (currentTurn == AIturn && !thereIsAWinner && !checkFullBoard(boardMatrix)) {
+        val notFullBoard = !checkFullBoard(boardMatrix)
+        if (currentTurn == AIturn && !thereIsAWinner && notFullBoard) {
 
-            // AI decides what move he'll do next
+            // AI decides what move it should do next
             val bestMove = Minimax(
                 boardMatrix,
                 "x",
@@ -144,8 +147,10 @@ fun Board(
         clearCrossedCells(crossedCells)
         clearScore(score)
         turnsCounter = 0
+        currentTurn = "x"
         cellsClickedByAIorNot = flipTrueValues(cellsClickedByAIorNot)
         winner = ""
+        resetClearBoard()
     }
 
     // -------------------- Rendering section --------------------
@@ -165,19 +170,26 @@ fun Board(
                 painter = painterResource(id = images[currentTurn]!!),
                 contentDescription = "Current turn",
                 modifier = Modifier.size(56.dp)
+                    .padding(top = 8.dp)
             )
         }
 
         // Score
         Text(text = "Score", fontSize = 30.sp)
-        Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
             for (player: String in score.keys) {
                 Row ( verticalAlignment = Alignment.CenterVertically) {
                     Image(
                         painter = painterResource(id = images[player]!!),
                         contentDescription = "Current turn",
-//                        modifier = Modifier.size(56.dp)
+                        modifier = Modifier.padding(top = 2.dp)
                     )
+                    if (gameMode == "VS computer" && player == AIturn) {
+                        Text(text = "(AI)", fontSize = 11.sp, modifier = Modifier.padding(bottom = 9.dp))
+                    }
                     Text(text = ": ${score[player]}", fontSize = 20.sp)
                 }
             }
@@ -195,7 +207,6 @@ fun Board(
                                     boardMatrix[coordinates[0]][coordinates[1]] = currentTurn
                                 }
                             },
-                            resetClearBoard = resetClearBoard,
                             currentTurn = currentTurn,
                             changeTurn = { turnsCounter++ },
                             clearBoard = clearBoard,
@@ -226,4 +237,18 @@ fun Board(
 
     }
 
+}
+
+@Preview
+@Composable
+fun BoardPreview() {
+    Board(
+        size = 7,
+        numberOfPlayers = 4,
+        clearBoard = false,
+        resetClearBoard = {},
+        AIturn = "o",
+        gameMode = "VS computer",
+        showGameOverWindow = {winner, score, images ->  }
+    )
 }

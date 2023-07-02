@@ -27,7 +27,7 @@ fun MyApp(modifier: Modifier = Modifier) {
         mutableStateOf(2)
     }
 
-    val AIfigure: String by remember {
+    var figureOfAI: String by remember {
         mutableStateOf("o")
     }
 
@@ -54,6 +54,11 @@ fun MyApp(modifier: Modifier = Modifier) {
                     mode = settings["mode"]!!
                     boardSize = settings["size"]!!.first().digitToInt()
                     playersNumber = settings["players"]!!.first().digitToInt()
+                    if (settings["playersFigure"] == "x") {
+                        figureOfAI = "o"
+                    } else if (settings["playerFigure"] == "o") {
+                        figureOfAI = "x"
+                    }
                 },
                 closeSettingsWindow = { showSettingsWindow = false },
             )
@@ -62,13 +67,16 @@ fun MyApp(modifier: Modifier = Modifier) {
                 winner = winnerState,
                 score = scoreState,
                 images = imageAssets,
-                restartGame = { showGameOverWindow = false })
+                restartGame = { showGameOverWindow = false },
+                figureOfAI = figureOfAI,
+                gameMode = mode,
+            )
 
             else -> GameWindow(
                 size = boardSize,
                 players = playersNumber,
                 openSettingWindow = { showSettingsWindow = true },
-                AIfigure = AIfigure,
+                AIfigure = figureOfAI,
                 gameMode = mode,
                 gameOverWindow = { winner, score, images ->
                     winnerState = winner

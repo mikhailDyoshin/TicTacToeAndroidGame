@@ -17,7 +17,6 @@ import androidx.compose.ui.unit.dp
 fun Cell(
     checkForCombo: () -> Unit,
     addCoordinates: (List<Int>) -> Unit,
-    resetClearBoard: () -> Unit,
     changeTurn: () -> Unit,
     checkForWinner: () -> Unit,
     currentTurn: String,
@@ -68,7 +67,6 @@ fun Cell(
     // --------------------- Changing States ---------------------
 
     fun changeStateOnClick() {
-        resetClearBoard()
         addCoordinates(index)
         checkForCombo()
         if (image == 0) {

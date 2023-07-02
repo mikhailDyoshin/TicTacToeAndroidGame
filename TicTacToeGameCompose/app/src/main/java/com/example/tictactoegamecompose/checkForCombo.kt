@@ -129,7 +129,7 @@ fun checkNegDiag(
 }
 
 /**
- * The function checks each negative diagonal ([0,2], [1,1], [2,0] for example) of the board
+ * The function checks each positive diagonal ([0,2], [1,1], [2,0] for example) of the board
  * and returns a list of cells' coordinates
  * that belong to a combo
  * if any combo is found.
@@ -146,7 +146,7 @@ fun checkPosDiag(
     val boardSize = board.count()
 
     // Above the main positive diagonal, including the one
-    for (k in boardSize - 1 downTo boardSize - comboNumber) {
+    for (k in boardSize - 1 downTo boardSize - comboNumber-2) {
 
         combo = mutableListOf()
         for ((i, j) in (k downTo 0).withIndex()) {
