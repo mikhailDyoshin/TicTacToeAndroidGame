@@ -3,6 +3,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -10,8 +11,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.luminance
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.example.tictactoegamecompose.R
+import com.example.tictactoegamecompose.svgColorSetter
 
 @Composable
 fun Cell(
@@ -84,11 +90,13 @@ fun Cell(
 
     crossedState = crossed
 
+    val svgColor = svgColorSetter()
+
     // Change background of the cell when it's crossed
     color = if (crossedState) {
         Color.Red
     } else {
-        Color.White
+        MaterialTheme.colorScheme.background
     }
 
     // Hide the image of the cell when the board is cleared
@@ -100,6 +108,8 @@ fun Cell(
     if (wasClickedByAIState) {
         changeStateOnClick()
     }
+
+
 
     // --------------------- Rendering Section ---------------------
     IconButton(
@@ -114,14 +124,15 @@ fun Cell(
             }
         },
         modifier = Modifier
-            .border(1.dp, Color.Black)
+            .border(1.dp, svgColor)
             .padding(0.dp)
             .background(color)
     ) {
         if (image != 0) {
             Image(
                 painter = painterResource(id = image),
-                contentDescription = "cell image"
+                contentDescription = "cell image",
+                colorFilter = ColorFilter.tint(svgColor)
             )
         } else {
             // display nothing

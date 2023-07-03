@@ -15,8 +15,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.foundation.Image
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.tictactoegamecompose.svgColorSetter
 
 @Composable
 fun RadioButtonGroup(
@@ -32,6 +34,8 @@ fun RadioButtonGroup(
     var showImagesState by remember {
         mutableStateOf(false)
     }
+
+    val svgColor = svgColorSetter()
 
     showImagesState = showImages
 
@@ -66,7 +70,8 @@ fun RadioButtonGroup(
                         Image(
                             painter = painterResource(id = images[options.indexOf(text)]),
                             contentDescription = "RadioButtonImage",
-                            modifier = Modifier.size(28.dp)
+                            modifier = Modifier.size(28.dp),
+                            colorFilter = ColorFilter.tint(svgColor)
                         )
 
                     }

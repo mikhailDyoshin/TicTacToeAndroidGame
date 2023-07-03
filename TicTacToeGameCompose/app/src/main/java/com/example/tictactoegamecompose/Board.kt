@@ -17,8 +17,13 @@ import com.example.tictactoegamecompose.R
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.luminance
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.tictactoegamecompose.svgColorSetter
 
 
 @SuppressLint("MutableCollectionMutableState")
@@ -153,8 +158,9 @@ fun Board(
         resetClearBoard()
     }
 
-    // -------------------- Rendering section --------------------
+    val svgColor = svgColorSetter()
 
+    // -------------------- Rendering section --------------------
 
     Column(
         verticalArrangement = Arrangement.spacedBy(10.dp),
@@ -166,10 +172,13 @@ fun Board(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(text = "Turn:", fontSize = 40.sp)
+
             Image(
                 painter = painterResource(id = images[currentTurn]!!),
                 contentDescription = "Current turn",
-                modifier = Modifier.size(56.dp)
+                colorFilter = ColorFilter.tint(svgColor),
+                modifier = Modifier
+                    .size(56.dp)
                     .padding(top = 8.dp)
             )
         }
@@ -185,7 +194,8 @@ fun Board(
                     Image(
                         painter = painterResource(id = images[player]!!),
                         contentDescription = "Current turn",
-                        modifier = Modifier.padding(top = 2.dp)
+                        modifier = Modifier.padding(top = 2.dp),
+                        colorFilter = ColorFilter.tint(svgColor),
                     )
                     if (gameMode == "VS computer" && player == AIturn) {
                         Text(text = "(AI)", fontSize = 11.sp, modifier = Modifier.padding(bottom = 9.dp))

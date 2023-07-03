@@ -12,8 +12,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.size
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.tictactoegamecompose.R
+import com.example.tictactoegamecompose.svgColorSetter
 
 @Composable
 fun GameOverWindow(
@@ -34,6 +36,8 @@ fun GameOverWindow(
 
     val sortedScore = score.toList().sortedByDescending { (_, value) -> value }.toMap()
 
+    val svgColor = svgColorSetter()
+
 
     // -------------------- Rendering Section --------------------
     Column(
@@ -51,7 +55,8 @@ fun GameOverWindow(
                     contentDescription = "Current turn",
                     modifier = Modifier
                         .size(72.dp)
-                        .padding(top = 8.dp)
+                        .padding(top = 8.dp),
+                    colorFilter = ColorFilter.tint(svgColor)
                 )
                 Text(text = "won!", fontSize = h1FontSize.sp)
             }
@@ -77,7 +82,8 @@ fun GameOverWindow(
                     Image(
                         painter = painterResource(id = images[player]!!),
                         contentDescription = "Current turn",
-                        modifier = Modifier.padding(top = 3.dp)
+                        modifier = Modifier.padding(top = 3.dp),
+                        colorFilter = ColorFilter.tint(svgColor)
                     )
                     if (gameMode == "VS computer" && player == figureOfAI) {
                         Text(
