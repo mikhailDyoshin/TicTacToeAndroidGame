@@ -1,3 +1,5 @@
+package com.example.tictactoegamecompose
+
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Button
@@ -14,24 +16,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
-import com.example.tictactoegamecompose.R
+import com.example.tictactoegamecompose.bl.Game
 
 @SuppressLint("MutableCollectionMutableState", "UnrememberedMutableState")
 @Composable
 fun SettingsWindow(
     closeSettingsWindow: () -> Unit,
-    saveSettings: (MutableMap<String, String>) -> Unit,
+    game: Game,
 ) {
-
-
-    val defaultSettings = remember {
-        mutableStateMapOf(
-            "mode" to "VS player",
-            "size" to "3x3",
-            "players" to "2",
-            "playerFigure" to "x"
-        )
-    }
 
     val settings = remember {
         mutableStateMapOf(
@@ -42,17 +34,13 @@ fun SettingsWindow(
         )
     }
 
-    // Autosaving settings
-    if (settings != defaultSettings) {
-        saveSettings(settings)
-    }
-
     var disabledButtons: MutableList<String> by remember {
         mutableStateOf(mutableListOf())
     }
 
     val figureImages: List<Int> = listOf(R.drawable.cross, R.drawable.circle)
 
+    val boardSizeOptions: List<String> = listOf("3x3", "5x5", "7x7")
 
     when {
         settings["mode"] == "VS computer" -> {
@@ -81,38 +69,51 @@ fun SettingsWindow(
         RadioButtonGroup(
             options = listOf("VS player", "VS computer"),
             annotation = "Game mode",
-            setConfiguration = { mode -> settings["mode"] = mode },
+            setConfiguration = { mode ->
+                settings["mode"] = mode
+            },
             disabledButtons = mutableListOf(),
         )
 
-        // Board size configuration
         RadioButtonGroup(
-            options = listOf("3x3", "5x5", "7x7"),
+            options = boardSizeOptions,
             annotation = "Board size",
-            setConfiguration = { boardSize -> settings["size"] = boardSize },
+            setConfiguration = { boardSize ->
+                settings["size"] = boardSize
+            },
             disabledButtons = mutableListOf(),
         )
 
-        if (settings["mode"] == "VS player") {
-            // Number of players configuration
-            RadioButtonGroup(
+        when (settings["mode"]) {
+            "VS player" -> RadioButtonGroup(
                 options = listOf("2", "3", "4"),
                 annotation = "Players",
-                setConfiguration = { playersNumber -> settings["players"] = playersNumber },
+                setConfiguration = { playersNumber ->
+                    settings["players"] = playersNumber
+                },
                 disabledButtons = disabledButtons,
             )
-        } else if (settings["mode"] == "VS computer") {
-            // Player's figure configuration when game mode is set to "VS computer"
-            RadioButtonGroup(
+
+            "VS computer" -> RadioButtonGroup(
                 options = listOf("x", "o"),
                 annotation = "Play for",
-                setConfiguration = { playerFigure -> settings["playerFigure"] = playerFigure },
-                disabledButtons = disabledButtons,
+                setConfiguration = { playerFigure ->
+                    settings["playerFigure"] = playerFigure
+                },
+                disabledButtons = mutableListOf(),
                 images = figureImages,
                 showImages = true
             )
-        }
 
+            else -> RadioButtonGroup(
+                options = listOf("2", "3", "4"),
+                annotation = "Players",
+                setConfiguration = { playersNumber ->
+                    settings["players"] = playersNumber
+                },
+                disabledButtons = disabledButtons,
+            )
+        }
     }
 
 
@@ -121,6 +122,9 @@ fun SettingsWindow(
         val button = createRef()
 
         Button(onClick = {
+            game.gameSettings.selectGameConfigurations(settings)
+            game.setGameConfigurations()
+            game.restartGame()
             closeSettingsWindow()
         },
             modifier = Modifier.constrainAs(button) {
@@ -131,11 +135,10 @@ fun SettingsWindow(
             Text(text = "Play", fontSize = 46.sp)
         }
     }
-
 }
 
 @Preview
 @Composable
 fun SettingWindowPreview() {
-    SettingsWindow(closeSettingsWindow = {}, saveSettings = {})
+    SettingsWindow(closeSettingsWindow = {}, game = Game())
 }

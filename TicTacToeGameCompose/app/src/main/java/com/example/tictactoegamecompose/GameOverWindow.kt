@@ -1,3 +1,5 @@
+package com.example.tictactoegamecompose
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,18 +16,10 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.size
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.tictactoegamecompose.R
-import com.example.tictactoegamecompose.svgColorSetter
+import com.example.tictactoegamecompose.bl.Game
 
 @Composable
-fun GameOverWindow(
-    winner: String,
-    score: MutableMap<String, Int>,
-    restartGame: () -> Unit,
-    images: Map<String, Int>,
-    figureOfAI: String,
-    gameMode: String
-) {
+fun GameOverWindow(game: Game) {
 
     // Style values
     val h1FontSize = 44
@@ -33,6 +27,12 @@ fun GameOverWindow(
     val textFontSize = 24
     val buttonFontSize = 40
     val spaceBetween = 60
+
+    val score = game.score
+    val winner = game.winner
+    val images = game.images
+    val gameMode = game.getGameMode()
+    val figureOfAI = game.getShapeOfAI()
 
     val sortedScore = score.toList().sortedByDescending { (_, value) -> value }.toMap()
 
@@ -67,7 +67,7 @@ fun GameOverWindow(
         Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(top = spaceBetween.dp,)
+            modifier = Modifier.padding(top = spaceBetween.dp)
         ) {
             Text(text = "Score", fontSize = h2FontSize.sp)
             for ((index, player) in sortedScore.keys.withIndex()) {
@@ -101,7 +101,7 @@ fun GameOverWindow(
         }
 
         // Replay button
-        Button(onClick = { restartGame() },
+        Button(onClick = { game.restartGame() },
                 modifier = Modifier.padding(top = spaceBetween.dp)) {
             Text(
                 text = "Replay", fontSize = buttonFontSize.sp,
@@ -114,16 +114,6 @@ fun GameOverWindow(
 @Composable
 fun GameOverWindowPreview() {
     GameOverWindow(
-        winner = "+",
-        score = mutableMapOf<String, Int>("x" to 2, "o" to 0, "*" to 0, "+" to 0),
-        restartGame = {},
-        images = mutableMapOf(
-            "x" to R.drawable.cross,
-            "o" to R.drawable.circle,
-            "*" to R.drawable.triangle,
-            "+" to R.drawable.rectangle,
-        ),
-        figureOfAI = "o",
-        gameMode = "VS computer"
+        game = Game()
     )
 }

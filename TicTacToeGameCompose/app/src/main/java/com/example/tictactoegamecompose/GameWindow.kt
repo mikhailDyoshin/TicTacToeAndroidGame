@@ -1,44 +1,35 @@
+package com.example.tictactoegamecompose
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
-import com.example.tictactoegamecompose.R
-import com.example.tictactoegamecompose.svgColorSetter
+import com.example.tictactoegamecompose.bl.Game
 
 @Composable
-fun GameWindow(
-    size: Int,
-    players: Int,
-    openSettingWindow: () -> Unit,
-    AIfigure: String,
-    gameMode: String,
-    gameOverWindow: (winner: String, score: MutableMap<String, Int>, images: Map<String, Int>) -> Unit
-) {
-
-    var clearBoard: Boolean by remember {
-        mutableStateOf(false)
-    }
+fun GameWindow(openSettingWindow: () -> Unit, game: Game) {
 
     val svgColor = svgColorSetter()
+
+    LaunchedEffect(game) {
+        game.restartGame()
+    }
 
     ConstraintLayout {
 
         val settingsButton = createRef()
         val restartButton = createRef()
 
-        // Settings button
+        // Open settings button
         IconButton(onClick = { openSettingWindow() },
             modifier = Modifier.constrainAs(settingsButton) {
                 top.linkTo(parent.top, margin = 5.dp)
@@ -53,7 +44,7 @@ fun GameWindow(
         }
 
         // Restart button
-        IconButton(onClick = { clearBoard = true },
+        IconButton(onClick = { game.restartGame()},
             modifier = Modifier.constrainAs(restartButton) {
                 top.linkTo(parent.top, margin = 5.dp)
                 end.linkTo(parent.end, margin = 5.dp)
@@ -68,22 +59,11 @@ fun GameWindow(
 
     }
 
-
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
-        Board(
-            size = size,
-            numberOfPlayers = players,
-            clearBoard = clearBoard,
-            resetClearBoard = { clearBoard = false },
-            AIturn = AIfigure,
-            gameMode = gameMode,
-            showGameOverWindow = { winner, score, images -> gameOverWindow(winner, score, images) }
-        )
+        Board(game = game)
     }
-
 
 }
