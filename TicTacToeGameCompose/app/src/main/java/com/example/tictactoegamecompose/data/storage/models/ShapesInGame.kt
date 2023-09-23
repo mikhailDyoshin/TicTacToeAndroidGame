@@ -1,3 +1,3 @@
 package com.example.tictactoegamecompose.data.storage.models
 
-class ShapesInGame(var shapesInGame: List<String>)
+data class ShapesInGame(var shapesInGame: List<String>)

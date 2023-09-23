@@ -3,19 +3,20 @@ package com.example.tictactoegamecompose.presentation.board
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.example.tictactoegamecompose.data.repository.GameRepositoryImpl
-import com.example.tictactoegamecompose.data.storage.OfflineGameStorage
 import com.example.tictactoegamecompose.domain.usecase.composite.HandleAIMoveUseCase
+import com.example.tictactoegamecompose.domain.usecase.getter.GetBoardStateUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-
-class BoardViewModel: ViewModel() {
+@HiltViewModel
+class BoardViewModel @Inject constructor(
+    private val getBoardStateUseCase: GetBoardStateUseCase,
+    private val handleAIMoveUseCase: HandleAIMoveUseCase,
+) : ViewModel() {
 
     private val _state = mutableStateOf(BoardState())
 
     val state: State<BoardState> = _state
-
-    private val gameStorage = OfflineGameStorage.getInstance()
-    private val gameRepository = GameRepositoryImpl(gameStorage)
 
     init {
         getState()
@@ -24,26 +25,21 @@ class BoardViewModel: ViewModel() {
 
     fun getState() {
 
-        val currentTurn = gameRepository.getCurrentTurn()
-        val currentScore = gameRepository.getScore()
-        val boardSize = gameRepository.getBoardSize()
-        val gameMode = gameRepository.getGameMode()
-        val shapeOfAI = gameRepository.getShapeOfAI()
-        val imagesIDs = gameRepository.getDrawableContent().shapeImages
+        val boardState = getBoardStateUseCase.execute()
 
         _state.value = BoardState(
-            currentTurnImageID = currentTurn.currentTurnImageID,
-            currentScore = currentScore,
-            boardSize = boardSize,
-            gameMode = gameMode,
-            shapeOfAI = shapeOfAI,
-            imagesIDs = imagesIDs,
+            currentTurnImageID = boardState.currentTurn.currentTurnImageID,
+            currentScore = boardState.currentScore,
+            boardSize = boardState.boardSize,
+            gameMode = boardState.gameMode,
+            shapeOfAI = boardState.shapeOfAI,
+            imagesIDs = boardState.imagesIDs,
         )
     }
 
     fun simulateMoveOfAI() {
 
-        HandleAIMoveUseCase(gameRepository = gameRepository).execute()
+        handleAIMoveUseCase.execute()
 
     }
 

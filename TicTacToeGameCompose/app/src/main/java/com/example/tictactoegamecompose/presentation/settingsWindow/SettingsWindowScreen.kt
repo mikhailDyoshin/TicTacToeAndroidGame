@@ -11,13 +11,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.tictactoegamecompose.presentation.settingsWindow.components.RadioButtonGroup
 
 @SuppressLint("MutableCollectionMutableState", "UnrememberedMutableState")
 @Composable
 fun SettingsWindow(
     closeSettingsWindow: () -> Unit,
-    viewModel: SettingsWindowViewModel = SettingsWindowViewModel(),
+    viewModel: SettingsWindowViewModel = viewModel(),
 ) {
 
     val state = viewModel.state.value

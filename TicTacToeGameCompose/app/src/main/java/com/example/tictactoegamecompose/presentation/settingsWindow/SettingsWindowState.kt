@@ -2,10 +2,9 @@ package com.example.tictactoegamecompose.presentation.settingsWindow
 
 import com.example.tictactoegamecompose.R
 
-class SettingsWindowState(
+data class SettingsWindowState(
     var gameMode: String = "VS player",
     var boardSize: Int = 3,
-//    var boardSizeText: String = "3x3",
     var numberOfPlayers: Int = 2,
     var playerFigure: String = "x",
     val figureImages: List<Int> = listOf(R.drawable.cross, R.drawable.circle),

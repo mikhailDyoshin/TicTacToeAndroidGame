@@ -2,6 +2,7 @@ package com.example.tictactoegamecompose.presentation.settingsWindow
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.ViewModel
 import com.example.tictactoegamecompose.data.repository.GameRepositoryImpl
 import com.example.tictactoegamecompose.data.storage.OfflineGameStorage
 import com.example.tictactoegamecompose.domain.usecase.composite.HandleCreateGameUseCase
@@ -11,22 +12,30 @@ import com.example.tictactoegamecompose.domain.usecase.updater.UpdateBoardSizeUs
 import com.example.tictactoegamecompose.domain.usecase.updater.UpdateGameModeUseCase
 import com.example.tictactoegamecompose.domain.usecase.updater.UpdateNumberOfPlayersUseCase
 import com.example.tictactoegamecompose.domain.usecase.updater.UpdatePlayerFigureUseCAse
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class SettingsWindowViewModel {
+@HiltViewModel
+class SettingsWindowViewModel @Inject constructor(
+    private val getSettingsUseCase: GetSettingsUseCase,
+    private val updateNumberOfPlayersUseCase: UpdateNumberOfPlayersUseCase,
+    private val updateGameModeUseCase: UpdateGameModeUseCase,
+    private val updateBoardSizeUseCase: UpdateBoardSizeUseCase,
+    private val updatePlayerFigureUseCAse: UpdatePlayerFigureUseCAse,
+    private val updateAIFigureUseCase: UpdateAIFigureUseCase,
+    private val handleCreateGameUseCase: HandleCreateGameUseCase
+) : ViewModel() {
 
     private val _state = mutableStateOf(SettingsWindowState())
 
     val state: State<SettingsWindowState> = _state
-
-    private val gameStorage = OfflineGameStorage.getInstance()
-    private val gameRepository = GameRepositoryImpl(gameStorage)
 
     init {
         getSettings()
     }
 
     private fun getSettings() {
-        val currentSettings = GetSettingsUseCase(gameRepository = gameRepository).execute()
+        val currentSettings = getSettingsUseCase.execute()
 
         val disabledButtons: MutableList<String>
 
@@ -55,8 +64,7 @@ class SettingsWindowViewModel {
             else -> disabledButtons = mutableListOf()
         }
 
-        val numberOfPlayersUpdated =
-            GetSettingsUseCase(gameRepository = gameRepository).execute().numberOfPlayers
+        val numberOfPlayersUpdated = getSettingsUseCase.execute().numberOfPlayers
 
 
         _state.value = SettingsWindowState(
@@ -70,25 +78,23 @@ class SettingsWindowViewModel {
     }
 
     private fun resetNumberOfPlayers() {
-        UpdateNumberOfPlayersUseCase(gameRepository = gameRepository)
-            .execute(numberOfPlayers = 2)
+        updateNumberOfPlayersUseCase.execute(numberOfPlayers = 2)
     }
 
     fun setGameMode(gameMode: String) {
-        UpdateGameModeUseCase(gameRepository = gameRepository).execute(gameMode = gameMode)
+        updateGameModeUseCase.execute(gameMode = gameMode)
         getSettings()
     }
 
     fun setBoardSize(boardSize: String) {
         val boardSizeInt = _state.value.boardSizeOptionsMapStringToInt[boardSize]!!
-        UpdateBoardSizeUseCase(gameRepository = gameRepository).execute(boardSize = boardSizeInt)
+        updateBoardSizeUseCase.execute(boardSize = boardSizeInt)
         getSettings()
     }
 
     fun setNumberOfPlayers(numberOfPlayers: String) {
         val numberOfPlayersInt = numberOfPlayers.toInt()
-        UpdateNumberOfPlayersUseCase(gameRepository = gameRepository)
-            .execute(numberOfPlayers = numberOfPlayersInt)
+        updateNumberOfPlayersUseCase.execute(numberOfPlayers = numberOfPlayersInt)
         getSettings()
     }
 
@@ -101,14 +107,13 @@ class SettingsWindowViewModel {
             else -> "o"
         }
 
-        UpdatePlayerFigureUseCAse(gameRepository = gameRepository)
-            .execute(playerFigure = playerFigure)
-        UpdateAIFigureUseCase(gameRepository = gameRepository).execute(shapeOfAI = shapeOfAI)
+        updatePlayerFigureUseCAse.execute(playerFigure = playerFigure)
+        updateAIFigureUseCase.execute(shapeOfAI = shapeOfAI)
         getSettings()
     }
 
     fun restartGame() {
-        HandleCreateGameUseCase(gameRepository = gameRepository).execute()
+        handleCreateGameUseCase.execute()
     }
 
 }

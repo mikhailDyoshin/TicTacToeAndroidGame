@@ -1,3 +1,3 @@
 package com.example.tictactoegamecompose.presentation.cell
 
-class CellState(val imageId: Int = 0, val crossed: Boolean = false)
+data class CellState(var imageID: Int = 0, var crossed: Boolean = false)

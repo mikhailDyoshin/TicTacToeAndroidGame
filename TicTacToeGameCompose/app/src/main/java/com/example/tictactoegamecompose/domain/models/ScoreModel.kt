@@ -1,3 +1,3 @@
 package com.example.tictactoegamecompose.domain.models
 
-class ScoreModel(val score: MutableMap<String, Int>)
+data class ScoreModel(val score: MutableMap<String, Int>)

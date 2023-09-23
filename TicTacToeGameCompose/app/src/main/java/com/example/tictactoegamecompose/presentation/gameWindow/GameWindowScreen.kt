@@ -16,16 +16,21 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.tictactoegamecompose.R
 import com.example.tictactoegamecompose.presentation.board.BoardScreen
+import com.example.tictactoegamecompose.presentation.cell.CellViewModel
 import com.example.tictactoegamecompose.presentation.svgColorSetter
 
 @Composable
 fun GameWindowScreen(
     openSettingWindow: () -> Unit,
     checkGameStatus: () -> Unit,
-    viewModel: GameWindowViewModel = GameWindowViewModel(),
+    viewModel: GameWindowViewModel = viewModel(),
 ) {
+
+    val cellViewModel: CellViewModel = viewModel()
 
     var updateBoard by remember { mutableStateOf(false) }
 
@@ -57,6 +62,7 @@ fun GameWindowScreen(
         // Restart button
         IconButton(onClick = {
             viewModel.restartGame()
+            cellViewModel.getCellState()
             updateBoard = true
         },
             modifier = Modifier.constrainAs(restartButton) {

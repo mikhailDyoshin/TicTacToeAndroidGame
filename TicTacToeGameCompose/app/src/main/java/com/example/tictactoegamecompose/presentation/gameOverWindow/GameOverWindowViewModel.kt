@@ -2,19 +2,21 @@ package com.example.tictactoegamecompose.presentation.gameOverWindow
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.ViewModel
 import com.example.tictactoegamecompose.data.repository.GameRepositoryImpl
 import com.example.tictactoegamecompose.data.storage.OfflineGameStorage
 import com.example.tictactoegamecompose.domain.usecase.getter.GetGameOverStatisticsUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-
-class GameOverWindowViewModel {
+@HiltViewModel
+class GameOverWindowViewModel @Inject constructor(
+    private val getGameOverStatisticsUseCase: GetGameOverStatisticsUseCase
+): ViewModel() {
 
     private val _state = mutableStateOf(GameOverWindowState())
 
     val state: State<GameOverWindowState> = _state
-
-    private val gameStorage = OfflineGameStorage.getInstance()
-    private val gameRepository = GameRepositoryImpl(gameStorage)
 
     init {
         getGameOverStatistics()
@@ -22,7 +24,8 @@ class GameOverWindowViewModel {
 
     private fun getGameOverStatistics() {
 
-        val gameOverStats = GetGameOverStatisticsUseCase(gameRepository = gameRepository).execute()
+        val gameOverStats = getGameOverStatisticsUseCase.execute()
+
         _state.value = GameOverWindowState(
             score = gameOverStats.score,
             winner = gameOverStats.winner,

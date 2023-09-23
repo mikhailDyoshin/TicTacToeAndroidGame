@@ -4,7 +4,7 @@ import com.example.tictactoegamecompose.domain.models.ScoreModel
 import com.example.tictactoegamecompose.domain.models.ShapesModel
 import com.example.tictactoegamecompose.domain.models.WinnerModel
 
-class GameOverWindowState(
+data class GameOverWindowState(
     val score: ScoreModel = ScoreModel(score = mutableMapOf()),
     val winner: WinnerModel = WinnerModel(winner = ""),
     val images: ShapesModel = ShapesModel(shapeStrings = listOf(), shapeImages = mapOf()),

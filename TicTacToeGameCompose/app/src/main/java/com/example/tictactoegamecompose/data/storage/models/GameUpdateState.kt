@@ -1,6 +1,6 @@
 package com.example.tictactoegamecompose.data.storage.models
 
-class GameUpdateState(
+data class GameUpdateState(
     val clickedCellCoordinates: List<Int>,
     val crossedCellsCoordinates: MutableList<List<Int>>,
     val score: Score,

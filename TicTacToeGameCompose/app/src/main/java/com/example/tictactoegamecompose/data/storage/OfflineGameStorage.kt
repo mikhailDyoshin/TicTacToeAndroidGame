@@ -15,7 +15,7 @@ import com.example.tictactoegamecompose.data.storage.models.ShapesInGame
 import com.example.tictactoegamecompose.data.storage.models.Winner
 import org.testng.annotations.Test
 
-class OfflineGameStorage private constructor() : GameStorage {
+class OfflineGameStorage : GameStorage {
 
     private val gameSettings = GameSettings()
 
@@ -29,18 +29,18 @@ class OfflineGameStorage private constructor() : GameStorage {
         )
     }
 
-    companion object {
-        // Static instance variable
-        @Volatile
-        private var instance: OfflineGameStorage? = null
-
-        // Method to get the single instance of the class
-        fun getInstance(): OfflineGameStorage {
-            return instance ?: synchronized(this) {
-                instance ?: OfflineGameStorage().also { instance = it }
-            }
-        }
-    }
+//    companion object {
+//        // Static instance variable
+//        @Volatile
+//        private var instance: OfflineGameStorage? = null
+//
+//        // Method to get the single instance of the class
+//        fun getInstance(): OfflineGameStorage {
+//            return instance ?: synchronized(this) {
+//                instance ?: OfflineGameStorage().also { instance = it }
+//            }
+//        }
+//    }
 
     private lateinit var gameCurrentState: GameCurrentState
 
@@ -238,7 +238,7 @@ class OfflineGameStorage private constructor() : GameStorage {
 
 class OfflineGameStorageTest {
 
-    private val gameStorage = OfflineGameStorage.getInstance()
+    private val gameStorage = OfflineGameStorage()
 
     private val initGameParams = GameInitParameters(
         boardSize = 3,

@@ -15,11 +15,12 @@ import com.example.tictactoegamecompose.domain.usecase.transformer.CheckForGameO
 import com.example.tictactoegamecompose.domain.usecase.transformer.CheckForTieUseCase
 import com.example.tictactoegamecompose.domain.usecase.transformer.RevealWinnerUseCase
 import com.example.tictactoegamecompose.domain.usecase.transformer.SwitchTurnUseCase
-import com.example.tictactoegamecompose.domain.usecase.transformer.UpdateScoreUseCase
+import com.example.tictactoegamecompose.domain.usecase.updater.UpdateScoreUseCase
 import com.example.tictactoegamecompose.domain.usecase.updater.UpdateGameStateUseCase
 import com.example.tictactoegamecompose.domain.usecase.updater.UpdateGameStatusUseCase
+import javax.inject.Inject
 
-class HandlePlayerMoveUseCase(private val gameRepository: GameRepository) {
+class HandlePlayerMoveUseCase @Inject constructor(private val gameRepository: GameRepository) {
 
     fun execute(cellCoordinates: List<Int>) {
 

@@ -1,6 +1,6 @@
 package com.example.tictactoegamecompose.data.storage.models
 
-class GameSettings(
+data class GameSettings(
     var gameMode: String = "VS player",
     var boardSize: Int = 3,
     var numberOfPlayers: Int = 2,

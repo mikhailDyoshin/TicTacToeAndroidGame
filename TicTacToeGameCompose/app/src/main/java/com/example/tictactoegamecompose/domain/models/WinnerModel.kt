@@ -1,3 +1,3 @@
 package com.example.tictactoegamecompose.domain.models
 
-class WinnerModel(val winner: String = "")
+data class WinnerModel(val winner: String = "")

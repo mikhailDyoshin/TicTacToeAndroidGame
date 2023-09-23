@@ -7,8 +7,9 @@ import com.example.tictactoegamecompose.domain.usecase.getter.GetGameStatusUseCa
 import com.example.tictactoegamecompose.domain.usecase.getter.GetLogicBoardStateUseCase
 import com.example.tictactoegamecompose.domain.usecase.getter.GetShapeOfAIUseCase
 import com.example.tictactoegamecompose.domain.usecase.transformer.CalculateAINextMoveUseCase
+import javax.inject.Inject
 
-class HandleAIMoveUseCase(private val gameRepository: GameRepository) {
+class HandleAIMoveUseCase @Inject constructor(gameRepository: GameRepository) {
 
     private val logicBoardState = GetLogicBoardStateUseCase(gameRepository).execute()
 

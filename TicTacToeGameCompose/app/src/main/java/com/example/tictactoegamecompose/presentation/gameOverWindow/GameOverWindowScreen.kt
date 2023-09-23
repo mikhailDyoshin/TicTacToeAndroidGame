@@ -16,12 +16,13 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.size
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.tictactoegamecompose.presentation.svgColorSetter
 
 @Composable
 fun GameOverWindowScreen(
     restartGame: () -> Unit,
-    viewModel: GameOverWindowViewModel = GameOverWindowViewModel()
+    viewModel: GameOverWindowViewModel = viewModel(),
 ) {
 
     // Style values

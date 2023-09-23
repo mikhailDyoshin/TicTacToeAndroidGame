@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.tictactoegamecompose.presentation.svgColorSetter
 
 @Composable
@@ -23,7 +24,7 @@ fun CellScreen(
     buttonCoordinates: List<Int>,
     checkGameStatus: () -> Unit,
     updateBoard: () -> Unit,
-    viewModel: CellViewModel = CellViewModel(buttonCoordinates)
+    viewModel: CellViewModel = viewModel()
 ) {
 
     // --------------------- States ---------------------
@@ -33,7 +34,11 @@ fun CellScreen(
         mutableStateOf(Color.White)
     }
 
-    val cell = viewModel.state.value
+    // Cell coordinates
+    val row = buttonCoordinates[0]
+    val col = buttonCoordinates[1]
+
+    val cell = viewModel.state.value[row][col]
 
     // --------------------- Changing States ---------------------
 
@@ -49,8 +54,7 @@ fun CellScreen(
     // --------------------- Rendering Section ---------------------
     IconButton(
         onClick = {
-            viewModel.changeGameState()
-            viewModel.getCellState()
+            viewModel.changeGameState(buttonCoordinates)
             updateBoard()
             checkGameStatus()
         },
@@ -59,9 +63,9 @@ fun CellScreen(
             .padding(0.dp)
             .background(color)
     ) {
-        if (cell.imageId != 0) {
+        if (cell.imageID != 0) {
             Image(
-                painter = painterResource(id = cell.imageId),
+                painter = painterResource(id = cell.imageID),
                 contentDescription = "cell image",
                 colorFilter = ColorFilter.tint(svgColor)
             )

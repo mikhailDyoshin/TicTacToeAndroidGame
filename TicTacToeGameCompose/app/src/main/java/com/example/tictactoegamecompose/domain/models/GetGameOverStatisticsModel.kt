@@ -1,6 +1,6 @@
 package com.example.tictactoegamecompose.domain.models
 
-class GetGameOverStatisticsModel(
+data class GetGameOverStatisticsModel(
     val score: ScoreModel,
     val winner: WinnerModel,
     val images: ShapesModel,

@@ -1,3 +1,3 @@
 package com.example.tictactoegamecompose.data.storage.models
 
-class GameOver(var gameOver: Boolean)
+data class GameOver(var gameOver: Boolean)

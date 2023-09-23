@@ -2,19 +2,21 @@ package com.example.tictactoegamecompose.presentation.myApp
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import com.example.tictactoegamecompose.data.repository.GameRepositoryImpl
-import com.example.tictactoegamecompose.data.storage.OfflineGameStorage
+import androidx.lifecycle.ViewModel
 import com.example.tictactoegamecompose.domain.usecase.composite.HandleCreateGameUseCase
 import com.example.tictactoegamecompose.domain.usecase.getter.GetGameStatusUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class MyAppViewModel {
+@HiltViewModel
+class MyAppViewModel @Inject constructor(
+    private val getGameStatusUseCase: GetGameStatusUseCase,
+    private val handleCreateGameUseCase: HandleCreateGameUseCase
+): ViewModel() {
 
     private val _state = mutableStateOf(MyAppState())
 
     val state: State<MyAppState> = _state
-
-    private val gameStorage = OfflineGameStorage.getInstance()
-    private val gameRepository = GameRepositoryImpl(gameStorage)
 
     init {
         getGameStatus()
@@ -22,7 +24,7 @@ class MyAppViewModel {
 
     fun getGameStatus() {
 
-        val gameStatus = GetGameStatusUseCase(gameRepository = gameRepository).execute()
+        val gameStatus = getGameStatusUseCase.execute()
         if (gameStatus.gameOverStatus) {
             _state.value = MyAppState(myAppState = gameStatus)
         }
@@ -31,8 +33,8 @@ class MyAppViewModel {
 
     fun resetGameStatus() {
 
-        HandleCreateGameUseCase(gameRepository = gameRepository).execute()
-        val gameStatus = GetGameStatusUseCase(gameRepository = gameRepository).execute()
+        handleCreateGameUseCase.execute()
+        val gameStatus = getGameStatusUseCase.execute()
         _state.value = MyAppState(myAppState = gameStatus)
 
     }

@@ -1,18 +1,17 @@
 package com.example.tictactoegamecompose.presentation.gameWindow
 
 
-import com.example.tictactoegamecompose.data.repository.GameRepositoryImpl
-import com.example.tictactoegamecompose.data.storage.OfflineGameStorage
+import androidx.lifecycle.ViewModel
 import com.example.tictactoegamecompose.domain.usecase.composite.HandleCreateGameUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-
-class GameWindowViewModel {
-
-    private val gameStorage = OfflineGameStorage.getInstance()
-    private val gameRepository = GameRepositoryImpl(gameStorage)
+@HiltViewModel
+class GameWindowViewModel @Inject constructor(private val handleCreateGameUseCase: HandleCreateGameUseCase) :
+    ViewModel() {
 
     fun restartGame() {
-        HandleCreateGameUseCase(gameRepository = gameRepository).execute()
+        handleCreateGameUseCase.execute()
     }
 
 }

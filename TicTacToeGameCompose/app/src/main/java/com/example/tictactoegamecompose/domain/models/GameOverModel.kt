@@ -1,3 +1,3 @@
 package com.example.tictactoegamecompose.domain.models
 
-class GameOverModel(val gameOverStatus: Boolean)
+data class GameOverModel(val gameOverStatus: Boolean)

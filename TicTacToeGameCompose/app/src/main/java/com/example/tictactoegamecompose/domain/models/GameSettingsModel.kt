@@ -1,6 +1,6 @@
 package com.example.tictactoegamecompose.domain.models
 
-class GameSettingsModel(
+data class GameSettingsModel(
     val gameMode: String,
     val boardSize: Int,
     val numberOfPlayers: Int,

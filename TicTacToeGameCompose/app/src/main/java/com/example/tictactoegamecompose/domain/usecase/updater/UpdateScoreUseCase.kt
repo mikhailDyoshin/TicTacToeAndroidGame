@@ -1,12 +1,13 @@
-package com.example.tictactoegamecompose.domain.usecase.transformer
+package com.example.tictactoegamecompose.domain.usecase.updater
 
 import com.example.tictactoegamecompose.domain.models.BoardStateModel
 import com.example.tictactoegamecompose.domain.models.ScoreModel
 import com.example.tictactoegamecompose.domain.repository.GameRepository
-import com.example.tictactoegamecompose.domain.usecase.getter.GetCurrentTurnUseCase
 import com.example.tictactoegamecompose.domain.usecase.getter.GetScoreUseCase
+import com.example.tictactoegamecompose.domain.usecase.transformer.CheckForComboUseCase
+import javax.inject.Inject
 
-class UpdateScoreUseCase(private val gameRepository: GameRepository) {
+class UpdateScoreUseCase @Inject constructor(private val gameRepository: GameRepository) {
 
     fun execute(boardState: BoardStateModel): ScoreModel {
 

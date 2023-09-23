@@ -9,8 +9,9 @@ import com.example.tictactoegamecompose.domain.usecase.getter.GetLogicBoardUseCa
 import com.example.tictactoegamecompose.domain.usecase.getter.GetNumberOfPlayersUseCase
 import com.example.tictactoegamecompose.domain.usecase.transformer.FigureOutShapesInGameUseCase
 import com.example.tictactoegamecompose.domain.usecase.updater.CreateGameUseCase
+import javax.inject.Inject
 
-class HandleCreateGameUseCase(private val gameRepository: GameRepository) {
+class HandleCreateGameUseCase @Inject constructor(private val gameRepository: GameRepository) {
 
     fun execute() {
         val numberOfPlayers = GetNumberOfPlayersUseCase(gameRepository = gameRepository).execute()

@@ -1,6 +1,6 @@
 package com.example.tictactoegamecompose.data.repository
 
-import com.example.tictactoegamecompose.data.storage.GameStorage
+import com.example.tictactoegamecompose.data.storage.OfflineGameStorage
 import com.example.tictactoegamecompose.data.storage.models.CurrentTurn
 import com.example.tictactoegamecompose.data.storage.models.GameInitParameters
 import com.example.tictactoegamecompose.data.storage.models.GameOver
@@ -27,8 +27,10 @@ import com.example.tictactoegamecompose.domain.models.ShapesInGameModel
 import com.example.tictactoegamecompose.domain.models.ShapesModel
 import com.example.tictactoegamecompose.domain.models.WinnerModel
 import com.example.tictactoegamecompose.domain.repository.GameRepository
+import javax.inject.Inject
 
-class GameRepositoryImpl(private val gameStorage: GameStorage) : GameRepository {
+class GameRepositoryImpl @Inject constructor(private val gameStorage: OfflineGameStorage) :
+    GameRepository {
 
 
     override fun createGame(gameInitData: GameInitDataModel) {
