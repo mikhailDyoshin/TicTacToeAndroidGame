@@ -15,7 +15,9 @@ import com.example.tictactoegamecompose.presentation.gameWindow.GameWindowScreen
 
 @SuppressLint("MutableCollectionMutableState")
 @Composable
-    fun MyApp(modifier: Modifier = Modifier, viewModel: MyAppViewModel = viewModel()) {
+fun MyApp(modifier: Modifier = Modifier, viewModel: MyAppViewModel = viewModel()) {
+
+    viewModel.getGameStatus()
 
     var showSettingsWindow: Boolean by remember {
         mutableStateOf(false)

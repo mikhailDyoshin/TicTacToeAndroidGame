@@ -3,8 +3,6 @@ package com.example.tictactoegamecompose.presentation.gameOverWindow
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.example.tictactoegamecompose.data.repository.GameRepositoryImpl
-import com.example.tictactoegamecompose.data.storage.OfflineGameStorage
 import com.example.tictactoegamecompose.domain.usecase.getter.GetGameOverStatisticsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -18,11 +16,7 @@ class GameOverWindowViewModel @Inject constructor(
 
     val state: State<GameOverWindowState> = _state
 
-    init {
-        getGameOverStatistics()
-    }
-
-    private fun getGameOverStatistics() {
+    fun getGameOverStatistics() {
 
         val gameOverStats = getGameOverStatisticsUseCase.execute()
 

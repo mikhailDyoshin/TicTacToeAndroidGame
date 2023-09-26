@@ -9,28 +9,29 @@ import com.example.tictactoegamecompose.domain.usecase.getter.GetShapeOfAIUseCas
 import com.example.tictactoegamecompose.domain.usecase.transformer.CalculateAINextMoveUseCase
 import javax.inject.Inject
 
-class HandleAIMoveUseCase @Inject constructor(gameRepository: GameRepository) {
-
-    private val logicBoardState = GetLogicBoardStateUseCase(gameRepository).execute()
-
-    private val calculateAINextMoveUseCase =
-        CalculateAINextMoveUseCase(boardState = logicBoardState)
-
-    private val handlePlayerMoveUseCase = HandlePlayerMoveUseCase(gameRepository = gameRepository)
-
-    private val gameMode = GetGameModeUseCase(gameRepository = gameRepository).execute()
-
-    private val currentTurn =
-        GetCurrentTurnUseCase(gameRepository = gameRepository).execute().currentTurnShape
-
-    private val shapeOfAI = GetShapeOfAIUseCase(gameRepository = gameRepository).execute()
-
-    private val gameOver =
-        GetGameStatusUseCase(gameRepository = gameRepository).execute().gameOverStatus
+class HandleAIMoveUseCase @Inject constructor(private val gameRepository: GameRepository) {
 
     fun execute() {
 
+            val gameMode = GetGameModeUseCase(gameRepository = gameRepository).execute()
+
+            val currentTurn =
+                GetCurrentTurnUseCase(gameRepository = gameRepository).execute().currentTurnShape
+
+            val shapeOfAI = GetShapeOfAIUseCase(gameRepository = gameRepository).execute()
+
+            val gameOver =
+                GetGameStatusUseCase(gameRepository = gameRepository).execute().gameOverStatus
+
         if (gameMode == "VS computer" && currentTurn == shapeOfAI && !gameOver) {
+
+            val logicBoardState = GetLogicBoardStateUseCase(gameRepository).execute()
+
+            val calculateAINextMoveUseCase =
+                CalculateAINextMoveUseCase(boardState = logicBoardState)
+
+            val handlePlayerMoveUseCase = HandlePlayerMoveUseCase(gameRepository = gameRepository)
+
             val clickedCellCoordinate = calculateAINextMoveUseCase.execute()
 
             handlePlayerMoveUseCase.execute(clickedCellCoordinate)

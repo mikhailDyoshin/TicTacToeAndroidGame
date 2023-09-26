@@ -6,7 +6,6 @@ import com.example.tictactoegamecompose.domain.repository.GameRepository
 import com.example.tictactoegamecompose.domain.usecase.composite.HandleAIMoveUseCase
 import com.example.tictactoegamecompose.domain.usecase.composite.HandleCreateGameUseCase
 import com.example.tictactoegamecompose.domain.usecase.composite.HandlePlayerMoveUseCase
-import com.example.tictactoegamecompose.domain.usecase.getter.GetBoardSizeUseCase
 import com.example.tictactoegamecompose.domain.usecase.getter.GetBoardStateUseCase
 import com.example.tictactoegamecompose.domain.usecase.getter.GetContentBoardUseCase
 import com.example.tictactoegamecompose.domain.usecase.getter.GetCurrentTurnUseCase
@@ -113,7 +112,6 @@ object AppModule {
         getShapeOfAIUseCase: GetShapeOfAIUseCase,
         handlePlayerMoveUseCase: HandlePlayerMoveUseCase,
         getContentBoardUseCase: GetContentBoardUseCase,
-        getBoardSizeUseCase: GetBoardSizeUseCase
     ): CellViewModel {
         return CellViewModel(
             getGameModeUseCase,
@@ -121,9 +119,8 @@ object AppModule {
             getShapeOfAIUseCase,
             handlePlayerMoveUseCase,
             getContentBoardUseCase,
-            getBoardSizeUseCase
         )
     }
 
-
 }
+

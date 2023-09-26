@@ -16,7 +16,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.tictactoegamecompose.presentation.cell.CellScreen
 import com.example.tictactoegamecompose.presentation.svgColorSetter
@@ -29,6 +28,8 @@ fun BoardScreen(
     checkGameStatus: () -> Unit,
     viewModel: BoardViewModel = viewModel()
 ) {
+
+    viewModel.getState()
 
     val state = viewModel.state.value
 
@@ -48,6 +49,7 @@ fun BoardScreen(
 
     if (updateBoard) {
         resetUpdateBoard()
+        viewModel.getState()
     }
 
     // -------------------- Rendering section --------------------

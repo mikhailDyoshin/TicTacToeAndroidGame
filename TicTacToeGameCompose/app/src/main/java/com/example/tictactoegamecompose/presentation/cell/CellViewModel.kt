@@ -1,11 +1,9 @@
 package com.example.tictactoegamecompose.presentation.cell
 
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.tictactoegamecompose.domain.usecase.composite.HandlePlayerMoveUseCase
-import com.example.tictactoegamecompose.domain.usecase.getter.GetBoardSizeUseCase
 import com.example.tictactoegamecompose.domain.usecase.getter.GetContentBoardUseCase
 import com.example.tictactoegamecompose.domain.usecase.getter.GetCurrentTurnUseCase
 import com.example.tictactoegamecompose.domain.usecase.getter.GetGameModeUseCase
@@ -20,30 +18,14 @@ class CellViewModel @Inject constructor(
     private val getShapeOfAIUseCase: GetShapeOfAIUseCase,
     private val handlePlayerMoveUseCase: HandlePlayerMoveUseCase,
     private val getContentBoardUseCase: GetContentBoardUseCase,
-    getBoardSizeUseCase: GetBoardSizeUseCase,
 ) : ViewModel() {
 
-    private var _state: MutableState<List<MutableList<CellState>>>
+    private val _state = mutableStateOf(CellState())
 
-    init {
-        val boardSize = getBoardSizeUseCase.execute()
+    val state: State<CellState> = _state
 
-        _state = mutableStateOf(List(boardSize) {
-            MutableList(boardSize) {
-                CellState(
-                    crossed = false,
-                    imageID = 0
-                )
-            }
-        })
 
-        getCellState()
-
-    }
-
-    val state: State<List<MutableList<CellState>>> = _state
-
-    fun changeGameState(buttonCoordinates: List<Int>) {
+    fun changeGameState(row: Int, col: Int) {
 
         val gameMode = getGameModeUseCase.execute()
         val currentTurnShape = getCurrentTurnUseCase.execute().currentTurnShape
@@ -51,23 +33,19 @@ class CellViewModel @Inject constructor(
 
         if (gameMode == "VS computer") {
             if (currentTurnShape != shapeOfAI) {
-                handlePlayerMoveUseCase.execute(buttonCoordinates)
+                handlePlayerMoveUseCase.execute(listOf(row, col))
             }
         } else {
-            handlePlayerMoveUseCase.execute(buttonCoordinates)
+            handlePlayerMoveUseCase.execute(listOf(row, col))
         }
 
-        getCellState()
+        getCellState(row = row, col = col)
 
     }
 
-    fun getCellState() {
-        getContentBoardUseCase.execute().board.mapIndexed { rowIndex, row -> row.mapIndexed {
-                colIndex, cell ->
-            _state.value[rowIndex][colIndex].crossed = cell.crossed
-            _state.value[rowIndex][colIndex].imageID = cell.image
-        } }
+    fun getCellState(row: Int, col: Int) {
+        val cell = getContentBoardUseCase.execute().board[row][col]
+        _state.value = CellState(imageID = cell.image, crossed = cell.crossed)
     }
-
 
 }

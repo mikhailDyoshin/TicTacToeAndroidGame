@@ -25,6 +25,8 @@ fun GameOverWindowScreen(
     viewModel: GameOverWindowViewModel = viewModel(),
 ) {
 
+    viewModel.getGameOverStatistics()
+
     // Style values
     val h1FontSize = 44
     val h2FontSize = 30

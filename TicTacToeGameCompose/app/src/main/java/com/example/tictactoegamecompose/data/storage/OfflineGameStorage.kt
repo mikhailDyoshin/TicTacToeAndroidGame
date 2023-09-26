@@ -29,21 +29,7 @@ class OfflineGameStorage : GameStorage {
         )
     }
 
-//    companion object {
-//        // Static instance variable
-//        @Volatile
-//        private var instance: OfflineGameStorage? = null
-//
-//        // Method to get the single instance of the class
-//        fun getInstance(): OfflineGameStorage {
-//            return instance ?: synchronized(this) {
-//                instance ?: OfflineGameStorage().also { instance = it }
-//            }
-//        }
-//    }
-
     private lateinit var gameCurrentState: GameCurrentState
-
 
 
     override fun createGame(gameInitParameters: GameInitParameters) {
@@ -128,15 +114,6 @@ class OfflineGameStorage : GameStorage {
     override fun updateShapeOfAI(shapeOfAI: String) {
         gameSettings.shapeOfAI = shapeOfAI
     }
-
-//    override fun updateSettings(settings: GameSettings) {
-//        gameSettings.gameMode = settings.gameMode
-//        gameSettings.boardSize = settings.boardSize
-//        gameSettings.numberOfPlayers = settings.numberOfPlayers
-//        gameSettings.shapeOfPlayer = settings.shapeOfPlayer
-//        gameSettings.shapeOfAI = settings.shapeOfAI
-//    }
-
 
     // Create
     private fun createBoard(boardSize: Int) {
@@ -288,7 +265,7 @@ class OfflineGameStorageTest {
             currentTurnImageID = shapes.shapeImages["o"]!!
         ),
 
-    )
+        )
 
     private val gameUpdateStatus = GameUpdateStatus(
         winner = Winner(winner = "x"),

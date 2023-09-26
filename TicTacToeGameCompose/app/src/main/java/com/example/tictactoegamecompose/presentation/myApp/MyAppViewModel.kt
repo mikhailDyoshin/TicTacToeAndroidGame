@@ -18,10 +18,6 @@ class MyAppViewModel @Inject constructor(
 
     val state: State<MyAppState> = _state
 
-    init {
-        getGameStatus()
-    }
-
     fun getGameStatus() {
 
         val gameStatus = getGameStatusUseCase.execute()
