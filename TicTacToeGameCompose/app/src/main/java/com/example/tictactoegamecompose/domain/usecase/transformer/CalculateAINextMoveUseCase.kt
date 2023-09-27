@@ -1,6 +1,9 @@
 package com.example.tictactoegamecompose.domain.usecase.transformer
 
 import com.example.tictactoegamecompose.domain.models.BoardStateModel
+import java.lang.Integer.max
+import java.lang.Math.min
+
 data class Move(var coordinates: List<Int> = listOf() , var score: Int = 0)
 class CalculateAINextMoveUseCase(boardState: BoardStateModel) {
 
@@ -20,7 +23,7 @@ class CalculateAINextMoveUseCase(boardState: BoardStateModel) {
 
     private var depth = 0
 
-    private val maxDepth = 2
+    private val maxDepth = 5
 
     private val crossedCells = boardStateCopy.crossedCells
 
@@ -31,7 +34,7 @@ class CalculateAINextMoveUseCase(boardState: BoardStateModel) {
     private val comboNumber = boardStateCopy.comboNumber
 
     fun execute(): List<Int> {
-        return minimax(board, aiPlayer).coordinates
+        return minimax(board, aiPlayer, Int.MIN_VALUE, Int.MAX_VALUE).coordinates
     }
 
     private fun getEmptyCellsCoordinates(
@@ -53,7 +56,9 @@ class CalculateAINextMoveUseCase(boardState: BoardStateModel) {
 
     private fun minimax(
         board: List<MutableList<String>>,
-        player: String
+        player: String,
+        alpha: Int,
+        beta: Int,
     ): Move {
 
         val availableCells = getEmptyCellsCoordinates(board)
@@ -111,9 +116,25 @@ class CalculateAINextMoveUseCase(boardState: BoardStateModel) {
 
                     //if collect the score resulted from calling minimax on the opponent of the current player
                     if (player == aiPlayer) {
-                        move.score = minimax(board, huPlayer).score
+                        val moveScore = minimax(board, aiPlayer, alpha, beta).score
+                        val newAlpha = max(alpha, moveScore)
+
+                        if (newAlpha >= beta) {
+                            break // Beta cut-off
+                        } else {
+                            move.score = moveScore
+                        }
+
                     } else {
-                        move.score = minimax(board, aiPlayer).score
+                        val moveScore = minimax(board, aiPlayer, alpha, beta).score
+                        val newBeta = min(beta, moveScore)
+
+                        if (newBeta <= alpha) {
+                            break // Alpha cut-off
+                        } else {
+                            move.score = moveScore
+                        }
+
                     }
 
                     move.coordinates = emptyCell
