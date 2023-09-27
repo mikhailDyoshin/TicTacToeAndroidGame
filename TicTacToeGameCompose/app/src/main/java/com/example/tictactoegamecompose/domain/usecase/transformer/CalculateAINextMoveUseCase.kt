@@ -1,8 +1,10 @@
 package com.example.tictactoegamecompose.domain.usecase.transformer
 
 import com.example.tictactoegamecompose.domain.models.BoardStateModel
-
+data class Move(var coordinates: List<Int> = listOf() , var score: Int = 0)
 class CalculateAINextMoveUseCase(boardState: BoardStateModel) {
+
+
 
     private val boardStateCopy = BoardStateModel(
         board = boardState.board.toList(),
@@ -29,10 +31,10 @@ class CalculateAINextMoveUseCase(boardState: BoardStateModel) {
     private val comboNumber = boardStateCopy.comboNumber
 
     fun execute(): List<Int> {
-        return minimax(board, aiPlayer)["index"]!!
+        return minimax(board, aiPlayer).coordinates
     }
 
-    private fun emptyCellsCoordinates(
+    private fun getEmptyCellsCoordinates(
         board: List<MutableList<String>>
     ): MutableList<List<Int>> {
 
@@ -52,14 +54,15 @@ class CalculateAINextMoveUseCase(boardState: BoardStateModel) {
     private fun minimax(
         board: List<MutableList<String>>,
         player: String
-    ): MutableMap<String, List<Int>> {
+    ): Move {
 
-        val availableCells = emptyCellsCoordinates(board)
+        val availableCells = getEmptyCellsCoordinates(board)
 
-        val moves: MutableList<MutableMap<String, List<Int>>> = mutableListOf()
+        val moves: MutableList<Move> = mutableListOf()
 
-
-        if (comboTracker.execute(
+        when {
+            // Combo for human player is found
+            comboTracker.execute(
                 boardState = BoardStateModel(
                     board = board,
                     currentTurn = huPlayer,
@@ -67,11 +70,12 @@ class CalculateAINextMoveUseCase(boardState: BoardStateModel) {
                     crossedCells = crossedCells,
                     comboNumber = comboNumber
                 )
-            )
-        ) {
-            depth--
-            return mutableMapOf("score" to listOf(-10))
-        } else if (comboTracker.execute(
+            ) -> {
+                depth--
+                return Move(score = -10, coordinates = listOf())
+            }
+            // Combo for AI player is found
+            comboTracker.execute(
                 boardState = BoardStateModel(
                     board = board,
                     currentTurn = aiPlayer,
@@ -79,71 +83,75 @@ class CalculateAINextMoveUseCase(boardState: BoardStateModel) {
                     crossedCells = crossedCells,
                     comboNumber = comboNumber
                 )
-            )
-        ) {
-            depth--
-            return mutableMapOf("score" to listOf(10))
-        } else if (availableCells.isEmpty()) {
-            depth--
-            return mutableMapOf("score" to listOf(0))
-        }
-
-        if (depth > maxDepth) {
-            depth--
-            return mutableMapOf("score" to listOf(0))
-        }
-
-
-        // loop through available spots
-        for ((i, _) in availableCells.withIndex()) {
-            //create an object for each and store the index of that spot that was stored as a number in the object's index key
-            val move: MutableMap<String, List<Int>> = mutableMapOf()
-
-            depth++
-
-            move["index"] = availableCells[i]
-
-            // set the empty spot to the current player
-            board[availableCells[i][0]][availableCells[i][1]] = player
-
-            //if collect the score resulted from calling minimax on the opponent of the current player
-            if (player == aiPlayer) {
-                val result = minimax(board, huPlayer)
-                move["score"] = result["score"]!!
-            } else {
-                val result = minimax(board, aiPlayer)
-                move["score"] = result["score"]!!
+            ) -> {
+                depth--
+                return Move(score = 10, coordinates = listOf())
+            }
+            // The board is full (no empty cells)
+            availableCells.isEmpty() -> {
+                depth--
+                return Move(score = 0, coordinates = listOf())
+            }
+            // The depth of the tree is more than max depth
+            depth > maxDepth -> {
+                depth--
+                return Move(score = 0, coordinates = listOf())
             }
 
-            //reset the spot to empty
-            board[availableCells[i][0]][availableCells[i][1]] = " "
+            else -> {
+                // loop through available cells
+                for (emptyCell in availableCells) {
+                    // create an object for each and store the index of that spot that was stored as a number in the object's index key
+                    val move = Move()
 
-            // push the object to the array
-            moves.add(move)
-        }
+                    depth++
 
-        var bestMove = 0
-        if (player == aiPlayer) {
-            var bestScore = -10000
-            for ((i, _) in moves.withIndex()) {
-                if (moves[i]["score"]!![0] > bestScore) {
-                    bestScore = moves[i]["score"]!![0]
-                    bestMove = i
+                    // set the empty spot to the current player
+                    board[emptyCell[0]][emptyCell[1]] = player
+
+                    //if collect the score resulted from calling minimax on the opponent of the current player
+                    if (player == aiPlayer) {
+                        move.score = minimax(board, huPlayer).score
+                    } else {
+                        move.score = minimax(board, aiPlayer).score
+                    }
+
+                    move.coordinates = emptyCell
+
+                    //reset the spot to empty
+                    board[emptyCell[0]][emptyCell[1]] = " "
+
+                    // push the object to the array
+                    moves.add(move)
                 }
-            }
-        } else {
 
-// else loop over the moves and choose the move with the lowest score
-            var bestScore = 10000
-            for ((i, _) in moves.withIndex()) {
-                if (moves[i]["score"]!![0] < bestScore) {
-                    bestScore = moves[i]["score"]!![0]
-                    bestMove = i
+                var bestMove = 0
+                // If it's AI player in the terminate node
+                // Then loop over the moves and choose the move with the highest score
+                if (player == aiPlayer) {
+                    var worstScore = -10000
+                    for ((i, _) in moves.withIndex()) {
+                        if (moves[i].score > worstScore) {
+                            worstScore = moves[i].score
+                            bestMove = i
+                        }
+                    }
+                // else loop over the moves and choose the move with the lowest score
+                } else {
+                    var worstScore = 10000
+                    for ((i, _) in moves.withIndex()) {
+                        if (moves[i].score < worstScore) {
+                            worstScore = moves[i].score
+                            bestMove = i
+                        }
+                    }
                 }
+
+                depth--
+                return moves[bestMove]
             }
+
         }
 
-        depth--
-        return moves[bestMove]
     }
 }
