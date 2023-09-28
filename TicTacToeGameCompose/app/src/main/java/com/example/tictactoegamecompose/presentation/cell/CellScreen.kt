@@ -15,9 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
-import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.tictactoegamecompose.R
 import com.example.tictactoegamecompose.presentation.svgColorSetter
 
 @Composable
@@ -73,4 +73,82 @@ fun CellScreen(
         }
 
     }
+}
+
+@Preview
+@Composable
+fun CellEmptyPreview() {
+    CellScreen(
+        row = 0,
+        col = 0,
+        cellState = CellState(imageID = 0, crossed = false),
+        checkGameStatus = {},
+        updateBoard = {},
+        changeGameState = { _, _ -> },
+    )
+}
+
+@Preview
+@Composable
+fun CellCrossPreview() {
+    CellScreen(
+        row = 0,
+        col = 0,
+        cellState = CellState(imageID = R.drawable.cross, crossed = false),
+        checkGameStatus = {},
+        updateBoard = {},
+        changeGameState = { _, _ -> },
+    )
+}
+
+@Preview
+@Composable
+fun CellCirclePreview() {
+    CellScreen(
+        row = 0,
+        col = 0,
+        cellState = CellState(imageID = R.drawable.circle, crossed = false),
+        checkGameStatus = {},
+        updateBoard = {},
+        changeGameState = { _, _ -> },
+    )
+}
+
+@Preview
+@Composable
+fun CellTrianglePreview() {
+    CellScreen(
+        row = 0,
+        col = 0,
+        cellState = CellState(imageID = R.drawable.triangle, crossed = false),
+        checkGameStatus = {},
+        updateBoard = {},
+        changeGameState = { _, _ -> },
+    )
+}
+
+@Preview
+@Composable
+fun CellRectanglePreview() {
+    CellScreen(
+        row = 0,
+        col = 0,
+        cellState = CellState(imageID = R.drawable.rectangle, crossed = false),
+        checkGameStatus = {},
+        updateBoard = {},
+        changeGameState = { _, _ -> },
+    )
+}
+
+@Preview
+@Composable
+fun CellCrossedPreview() {
+    CellScreen(
+        row = 0,
+        col = 0,
+        cellState = CellState(imageID = R.drawable.cross, crossed = true),
+        checkGameStatus = {},
+        updateBoard = {},
+        changeGameState = { _, _ -> },
+    )
 }
