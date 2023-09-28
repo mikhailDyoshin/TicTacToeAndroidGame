@@ -6,10 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
@@ -27,9 +23,6 @@ fun GameWindowScreen(
     checkGameStatus: () -> Unit,
     viewModel: GameWindowViewModel = viewModel(),
 ) {
-
-    var updateBoard by remember { mutableStateOf(false) }
-
 
     val svgColor = svgColorSetter()
 
@@ -58,8 +51,7 @@ fun GameWindowScreen(
         // Restart button
         IconButton(onClick = {
             viewModel.restartGame()
-//            cellViewModel.getCellState()
-            updateBoard = true
+            viewModel.getState()
         },
             modifier = Modifier.constrainAs(restartButton) {
                 top.linkTo(parent.top, margin = 5.dp)
@@ -80,9 +72,11 @@ fun GameWindowScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         BoardScreen(
-            updateBoard = updateBoard,
-            resetUpdateBoard = { updateBoard = false },
-            checkGameStatus = checkGameStatus,
+            state = viewModel.state.value,
+            simulateMoveOfAI = { viewModel.simulateMoveOfAI() },
+            updateState = { viewModel.getState() },
+            checkGameStatus = { checkGameStatus() },
+            changeGameState = { row, col -> viewModel.changeGameState(row, col) }
         )
     }
 

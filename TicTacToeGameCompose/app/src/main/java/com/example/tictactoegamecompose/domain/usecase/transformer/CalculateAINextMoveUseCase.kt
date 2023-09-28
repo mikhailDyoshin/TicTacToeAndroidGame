@@ -22,7 +22,7 @@ class CalculateAINextMoveUseCase(boardState: BoardStateModel) {
 
     private var depth = 0
 
-    private val maxDepth = 5
+    private val maxDepth = 2
 
     private val crossedCells = boardStateCopy.crossedCells
 

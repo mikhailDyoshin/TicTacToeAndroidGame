@@ -5,6 +5,11 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.tictactoegamecompose.presentation.gameWindow.GameWindowViewModel
 import com.example.tictactoegamecompose.presentation.myApp.MyApp
 import com.example.tictactoegamecompose.presentation.ui.theme.TicTacToeGameComposeTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -15,6 +20,16 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             TicTacToeGameComposeTheme {
+
+//                val navController = rememberNavController()
+//
+//                NavHost(navController = navController, startDestination = "game") {
+//                    composable(route = "game") {
+//                        val viewModel: GameWindowViewModel = viewModel()
+//                    }
+//                }
+
+
                 MyApp(modifier = Modifier.fillMaxSize())
             }
         }

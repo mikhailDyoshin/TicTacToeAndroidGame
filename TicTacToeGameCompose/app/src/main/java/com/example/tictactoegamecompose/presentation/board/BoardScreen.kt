@@ -16,20 +16,19 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.tictactoegamecompose.presentation.cell.CellScreen
 import com.example.tictactoegamecompose.presentation.svgColorSetter
 
 
 @Composable
 fun BoardScreen(
-    updateBoard: Boolean,
-    resetUpdateBoard: () -> Unit,
+    state: BoardState,
+    simulateMoveOfAI: () -> Unit,
+    updateState: () -> Unit,
     checkGameStatus: () -> Unit,
-    viewModel: BoardViewModel = viewModel()
+    changeGameState: (row: Int, col: Int) -> Unit,
 ) {
 
-    val state = viewModel.state.value
 
     val currentShapeImage = state.currentTurnImageID
 
@@ -42,14 +41,9 @@ fun BoardScreen(
     val svgColor = svgColorSetter()
 
     LaunchedEffect(currentShapeImage) {
-        viewModel.simulateMoveOfAI()
-        viewModel.getState()
+        simulateMoveOfAI()
+        updateState()
         checkGameStatus()
-    }
-
-    if (updateBoard) {
-        resetUpdateBoard()
-        viewModel.getState()
     }
 
     // -------------------- Rendering section --------------------
@@ -110,8 +104,8 @@ fun BoardScreen(
                             col = col,
                             cellState = contentBoard[row][col],
                             checkGameStatus = checkGameStatus,
-                            updateBoard = { viewModel.getState() },
-                            changeGameState = { y, x -> viewModel.changeGameState(y, x) }
+                            updateBoard = { updateState() },
+                            changeGameState = { y, x -> changeGameState(y, x) }
                         )
 
                     }
@@ -127,8 +121,10 @@ fun BoardScreen(
 @Composable
 fun BoardPreview() {
     BoardScreen(
-        updateBoard = false,
-        resetUpdateBoard = {},
+        state = BoardState(),
+        simulateMoveOfAI = {},
+        updateState = {},
         checkGameStatus = {},
+        changeGameState = { _, _ -> }
     )
 }

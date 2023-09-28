@@ -19,7 +19,6 @@ import com.example.tictactoegamecompose.domain.usecase.updater.UpdateBoardSizeUs
 import com.example.tictactoegamecompose.domain.usecase.updater.UpdateGameModeUseCase
 import com.example.tictactoegamecompose.domain.usecase.updater.UpdateNumberOfPlayersUseCase
 import com.example.tictactoegamecompose.domain.usecase.updater.UpdatePlayerFigureUseCAse
-import com.example.tictactoegamecompose.presentation.board.BoardViewModel
 import com.example.tictactoegamecompose.presentation.gameOverWindow.GameOverWindowViewModel
 import com.example.tictactoegamecompose.presentation.gameWindow.GameWindowViewModel
 import com.example.tictactoegamecompose.presentation.myApp.MyAppViewModel
@@ -49,28 +48,6 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideBoardViewModel(
-        getBoardStateUseCase: GetBoardStateUseCase,
-        handleAIMoveUseCase: HandleAIMoveUseCase,
-        getGameModeUseCase: GetGameModeUseCase,
-        getCurrentTurnUseCase: GetCurrentTurnUseCase,
-        getShapeOfAIUseCase: GetShapeOfAIUseCase,
-        handlePlayerMoveUseCase: HandlePlayerMoveUseCase,
-        getContentBoardUseCase: GetContentBoardUseCase,
-    ): BoardViewModel {
-        return BoardViewModel(
-            getBoardStateUseCase,
-            handleAIMoveUseCase,
-            getGameModeUseCase,
-            getCurrentTurnUseCase,
-            getShapeOfAIUseCase,
-            handlePlayerMoveUseCase,
-            getContentBoardUseCase,
-        )
-    }
-
-    @Provides
-    @Singleton
     fun provideGameOverWindowViewModel(
         getGameOverStatisticsUseCase: GetGameOverStatisticsUseCase
     ): GameOverWindowViewModel {
@@ -80,9 +57,25 @@ object AppModule {
     @Provides
     @Singleton
     fun provideGameWindowViewModel(
-        handleCreateGameUseCase: HandleCreateGameUseCase
+        handleCreateGameUseCase: HandleCreateGameUseCase,
+        getBoardStateUseCase: GetBoardStateUseCase,
+        handleAIMoveUseCase: HandleAIMoveUseCase,
+        getGameModeUseCase: GetGameModeUseCase,
+        getCurrentTurnUseCase: GetCurrentTurnUseCase,
+        getShapeOfAIUseCase: GetShapeOfAIUseCase,
+        handlePlayerMoveUseCase: HandlePlayerMoveUseCase,
+        getContentBoardUseCase: GetContentBoardUseCase,
     ): GameWindowViewModel {
-        return GameWindowViewModel(handleCreateGameUseCase)
+        return GameWindowViewModel(
+            handleCreateGameUseCase,
+            getBoardStateUseCase,
+            handleAIMoveUseCase,
+            getGameModeUseCase,
+            getCurrentTurnUseCase,
+            getShapeOfAIUseCase,
+            handlePlayerMoveUseCase,
+            getContentBoardUseCase,
+        )
     }
 
     @Provides
