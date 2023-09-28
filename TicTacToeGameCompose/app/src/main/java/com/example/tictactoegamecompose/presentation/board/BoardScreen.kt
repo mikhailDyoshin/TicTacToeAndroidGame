@@ -16,7 +16,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.tictactoegamecompose.R
+import com.example.tictactoegamecompose.domain.models.ScoreModel
 import com.example.tictactoegamecompose.presentation.cell.CellScreen
+import com.example.tictactoegamecompose.presentation.cell.CellState
 import com.example.tictactoegamecompose.presentation.svgColorSetter
 
 
@@ -121,7 +124,86 @@ fun BoardScreen(
 @Composable
 fun BoardPreview() {
     BoardScreen(
-        state = BoardState(),
+        state = BoardState(
+            currentTurnImageID = R.drawable.cross,
+            currentScore = ScoreModel(score = mutableMapOf("x" to 0, "o" to 1, "*" to 1, "+" to 1)),
+            boardSize = 7,
+            gameMode = "VS player",
+            shapeOfAI = "o",
+            imagesIDs = mutableMapOf(
+                "x" to R.drawable.cross,
+                "o" to R.drawable.circle,
+                "*" to R.drawable.triangle,
+                "+" to R.drawable.rectangle,
+            ),
+            contentBoard = listOf(
+                listOf(
+                    CellState(imageID = R.drawable.circle, crossed = true),
+                    CellState(imageID = R.drawable.circle, crossed = true),
+                    CellState(imageID = R.drawable.circle, crossed = true),
+                    CellState(imageID = 0, crossed = false),
+                    CellState(imageID = 0, crossed = false),
+                    CellState(imageID = 0, crossed = false),
+                    CellState(imageID = 0, crossed = false),
+                ),
+                listOf(
+                    CellState(imageID = 0, crossed = false),
+                    CellState(imageID = 0, crossed = false),
+                    CellState(imageID = 0, crossed = false),
+                    CellState(imageID = 0, crossed = false),
+                    CellState(imageID = 0, crossed = false),
+                    CellState(imageID = 0, crossed = false),
+                    CellState(imageID = 0, crossed = false),
+                ),
+                listOf(
+                    CellState(imageID = R.drawable.cross, crossed = false),
+                    CellState(imageID = R.drawable.cross, crossed = false),
+                    CellState(imageID = 0, crossed = false),
+                    CellState(imageID = R.drawable.cross, crossed = false),
+                    CellState(imageID = R.drawable.triangle, crossed = true),
+                    CellState(imageID = R.drawable.triangle, crossed = true),
+                    CellState(imageID = R.drawable.triangle, crossed = true),
+                ),
+                listOf(
+                    CellState(imageID = 0, crossed = false),
+                    CellState(imageID = 0, crossed = false),
+                    CellState(imageID = R.drawable.rectangle, crossed = true),
+                    CellState(imageID = 0, crossed = false),
+                    CellState(imageID = 0, crossed = false),
+                    CellState(imageID = 0, crossed = false),
+                    CellState(imageID = 0, crossed = false),
+                ),
+                listOf(
+                    CellState(imageID = 0, crossed = false),
+                    CellState(imageID = 0, crossed = false),
+                    CellState(imageID = R.drawable.rectangle, crossed = true),
+                    CellState(imageID = 0, crossed = false),
+                    CellState(imageID = 0, crossed = false),
+                    CellState(imageID = 0, crossed = false),
+                    CellState(imageID = 0, crossed = false),
+                ),
+                listOf(
+                    CellState(imageID = 0, crossed = false),
+                    CellState(imageID = 0, crossed = false),
+                    CellState(imageID = R.drawable.rectangle, crossed = true),
+                    CellState(imageID = 0, crossed = false),
+                    CellState(imageID = 0, crossed = false),
+                    CellState(imageID = 0, crossed = false),
+                    CellState(imageID = 0, crossed = false),
+                ),
+                listOf(
+                    CellState(imageID = 0, crossed = false),
+                    CellState(imageID = 0, crossed = false),
+                    CellState(imageID = 0, crossed = false),
+                    CellState(imageID = 0, crossed = false),
+                    CellState(imageID = 0, crossed = false),
+                    CellState(imageID = 0, crossed = false),
+                    CellState(imageID = 0, crossed = false),
+                ),
+
+                )
+
+        ),
         simulateMoveOfAI = {},
         updateState = {},
         checkGameStatus = {},

@@ -341,8 +341,6 @@ class OfflineGameStorageTest {
 
         gameStorage.createGame(gameInitParameters = initGameParams)
 
-//        gameStorage.updateSettings(settings = newSettings)
-
         val gameSettings = gameStorage.getSettings()
 
         assert(gameSettings.gameMode == newSettings.gameMode)
