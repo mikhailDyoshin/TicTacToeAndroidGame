@@ -4,9 +4,8 @@ import com.example.tictactoegamecompose.domain.models.BoardStateModel
 import java.lang.Integer.max
 import java.lang.Math.min
 
-data class Move(var coordinates: List<Int> = listOf() , var score: Int = 0)
+data class Move(var coordinates: List<Int> = listOf(), var score: Int = 0)
 class CalculateAINextMoveUseCase(boardState: BoardStateModel) {
-
 
 
     private val boardStateCopy = BoardStateModel(
@@ -157,7 +156,7 @@ class CalculateAINextMoveUseCase(boardState: BoardStateModel) {
                             bestMove = i
                         }
                     }
-                // else loop over the moves and choose the move with the lowest score
+                    // else loop over the moves and choose the move with the lowest score
                 } else {
                     var worstScore = 10000
                     for ((i, _) in moves.withIndex()) {

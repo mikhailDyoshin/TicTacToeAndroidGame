@@ -29,8 +29,6 @@ fun BoardScreen(
     viewModel: BoardViewModel = viewModel()
 ) {
 
-    viewModel.getState()
-
     val state = viewModel.state.value
 
     val currentShapeImage = state.currentTurnImageID
@@ -38,6 +36,8 @@ fun BoardScreen(
     val score = state.currentScore.score
 
     val size = state.boardSize
+
+    val contentBoard = state.contentBoard
 
     val svgColor = svgColorSetter()
 
@@ -106,9 +106,12 @@ fun BoardScreen(
                 Row {
                     for (col in 0 until size) {
                         CellScreen(
-                            buttonCoordinates = listOf(row, col),
+                            row = row,
+                            col = col,
+                            cellState = contentBoard[row][col],
                             checkGameStatus = checkGameStatus,
-                            updateBoard = { viewModel.getState() }
+                            updateBoard = { viewModel.getState() },
+                            changeGameState = { y, x -> viewModel.changeGameState(y, x) }
                         )
 
                     }

@@ -22,10 +22,12 @@ import com.example.tictactoegamecompose.presentation.svgColorSetter
 
 @Composable
 fun CellScreen(
-    buttonCoordinates: List<Int>,
+    row: Int,
+    col: Int,
+    cellState: CellState,
     checkGameStatus: () -> Unit,
     updateBoard: () -> Unit,
-    viewModel: CellViewModel = viewModel(viewModelStoreOwner = LocalViewModelStoreOwner.current!!)
+    changeGameState: (row: Int, col: Int) -> Unit,
 ) {
 
 
@@ -37,22 +39,12 @@ fun CellScreen(
         mutableStateOf(Color.White)
     }
 
-    // Cell coordinates
-    val row = buttonCoordinates[0]
-    val col = buttonCoordinates[1]
-
-    viewModel.getCellState(row, col)
-
-    val cell = viewModel.state.value
-
-//    updateBoard()
-
     // --------------------- Changing States ---------------------
 
     val svgColor = svgColorSetter()
 
     // Change background of the cell when it's crossed
-    color = if (cell.crossed) {
+    color = if (cellState.crossed) {
         Color.Red
     } else {
         MaterialTheme.colorScheme.background
@@ -61,7 +53,7 @@ fun CellScreen(
     // --------------------- Rendering Section ---------------------
     IconButton(
         onClick = {
-            viewModel.changeGameState(row = row, col = col)
+            changeGameState(row,  col)
             updateBoard()
             checkGameStatus()
         },
@@ -70,9 +62,9 @@ fun CellScreen(
             .padding(0.dp)
             .background(color)
     ) {
-        if (cell.imageID != 0) {
+        if (cellState.imageID != 0) {
             Image(
-                painter = painterResource(id = cell.imageID),
+                painter = painterResource(id = cellState.imageID),
                 contentDescription = "cell image",
                 colorFilter = ColorFilter.tint(svgColor)
             )

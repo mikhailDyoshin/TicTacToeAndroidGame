@@ -20,7 +20,6 @@ import com.example.tictactoegamecompose.domain.usecase.updater.UpdateGameModeUse
 import com.example.tictactoegamecompose.domain.usecase.updater.UpdateNumberOfPlayersUseCase
 import com.example.tictactoegamecompose.domain.usecase.updater.UpdatePlayerFigureUseCAse
 import com.example.tictactoegamecompose.presentation.board.BoardViewModel
-import com.example.tictactoegamecompose.presentation.cell.CellViewModel
 import com.example.tictactoegamecompose.presentation.gameOverWindow.GameOverWindowViewModel
 import com.example.tictactoegamecompose.presentation.gameWindow.GameWindowViewModel
 import com.example.tictactoegamecompose.presentation.myApp.MyAppViewModel
@@ -52,9 +51,22 @@ object AppModule {
     @Singleton
     fun provideBoardViewModel(
         getBoardStateUseCase: GetBoardStateUseCase,
-        handleAIMoveUseCase: HandleAIMoveUseCase
+        handleAIMoveUseCase: HandleAIMoveUseCase,
+        getGameModeUseCase: GetGameModeUseCase,
+        getCurrentTurnUseCase: GetCurrentTurnUseCase,
+        getShapeOfAIUseCase: GetShapeOfAIUseCase,
+        handlePlayerMoveUseCase: HandlePlayerMoveUseCase,
+        getContentBoardUseCase: GetContentBoardUseCase,
     ): BoardViewModel {
-        return BoardViewModel(getBoardStateUseCase, handleAIMoveUseCase)
+        return BoardViewModel(
+            getBoardStateUseCase,
+            handleAIMoveUseCase,
+            getGameModeUseCase,
+            getCurrentTurnUseCase,
+            getShapeOfAIUseCase,
+            handlePlayerMoveUseCase,
+            getContentBoardUseCase,
+        )
     }
 
     @Provides
@@ -101,24 +113,6 @@ object AppModule {
             updatePlayerFigureUseCAse,
             updateAIFigureUseCase,
             handleCreateGameUseCase,
-        )
-    }
-
-    @Provides
-    @Singleton
-    fun provideCellViewModel(
-        getGameModeUseCase: GetGameModeUseCase,
-        getCurrentTurnUseCase: GetCurrentTurnUseCase,
-        getShapeOfAIUseCase: GetShapeOfAIUseCase,
-        handlePlayerMoveUseCase: HandlePlayerMoveUseCase,
-        getContentBoardUseCase: GetContentBoardUseCase,
-    ): CellViewModel {
-        return CellViewModel(
-            getGameModeUseCase,
-            getCurrentTurnUseCase,
-            getShapeOfAIUseCase,
-            handlePlayerMoveUseCase,
-            getContentBoardUseCase,
         )
     }
 
