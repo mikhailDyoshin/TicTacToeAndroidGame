@@ -12,9 +12,11 @@ import com.example.tictactoegamecompose.domain.usecase.getter.GetBoardStateUseCa
 import com.example.tictactoegamecompose.domain.usecase.getter.GetContentBoardUseCase
 import com.example.tictactoegamecompose.domain.usecase.getter.GetCurrentTurnUseCase
 import com.example.tictactoegamecompose.domain.usecase.getter.GetGameModeUseCase
+import com.example.tictactoegamecompose.domain.usecase.getter.GetGameStatusUseCase
 import com.example.tictactoegamecompose.domain.usecase.getter.GetShapeOfAIUseCase
 import com.example.tictactoegamecompose.presentation.board.BoardState
 import com.example.tictactoegamecompose.presentation.cell.CellState
+import com.example.tictactoegamecompose.presentation.myApp.MyAppState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -28,12 +30,13 @@ class GameWindowViewModel @Inject constructor(
     private val getShapeOfAIUseCase: GetShapeOfAIUseCase,
     private val handlePlayerMoveUseCase: HandlePlayerMoveUseCase,
     private val getContentBoardUseCase: GetContentBoardUseCase,
+    private val getGameStatusUseCase: GetGameStatusUseCase,
     ) :
     ViewModel() {
 
-    private val _state = mutableStateOf(BoardState())
+    private val _state = mutableStateOf(GameState())
 
-    val state: State<BoardState> = _state
+    val state: State<GameState> = _state
 
     init {
         getState()
@@ -42,9 +45,12 @@ class GameWindowViewModel @Inject constructor(
 
     fun getState() {
 
+        val gameStatus = getGameStatusUseCase.execute()
         val boardState = getBoardStateUseCase.execute()
 
-        _state.value = BoardState(
+        _state.value.gameOver = gameStatus.gameOverStatus
+
+        _state.value.boardState = BoardState(
             currentTurnImageID = boardState.currentTurn.currentTurnShape.imageID,
             currentScore = boardState.currentScore,
             boardSize = boardState.boardSize,

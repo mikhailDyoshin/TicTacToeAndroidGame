@@ -1,6 +1,5 @@
 package com.example.tictactoegamecompose.presentation.settingsWindow
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -15,7 +14,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.tictactoegamecompose.common.GameMode
 import com.example.tictactoegamecompose.presentation.settingsWindow.components.RadioButtonGroup
 
-@SuppressLint("MutableCollectionMutableState", "UnrememberedMutableState")
 @Composable
 fun SettingsWindow(
     closeSettingsWindow: () -> Unit,
@@ -34,10 +32,10 @@ fun SettingsWindow(
             annotation = "Game mode",
             setConfiguration = { mode ->
                 when (mode) {
-                    "VS player" -> {
+                    GameMode.VS_PLAYER.str -> {
                         viewModel.setGameMode(gameMode = GameMode.VS_PLAYER)
                     }
-                    "VS computer" -> {
+                    GameMode.VS_COMPUTER.str -> {
                         viewModel.setGameMode(gameMode = GameMode.VS_COMPUTER)
                     }
                     else -> {
@@ -60,6 +58,7 @@ fun SettingsWindow(
             disabledButtons = mutableListOf(),
         )
 
+        // Number of players configuration
         when (state.gameMode) {
             GameMode.VS_PLAYER -> RadioButtonGroup(
                 selectedOption = state.numberOfPlayers.number.toString(),
@@ -83,19 +82,10 @@ fun SettingsWindow(
                 showImages = true
             )
 
-//            else -> RadioButtonGroup(
-//                selectedOption = state.numberOfPlayers.toString(),
-//                options = state.numberOfPlayersOptions,
-//                annotation = "Players",
-//                setConfiguration = { playersNumber ->
-//                    viewModel.setNumberOfPlayers(playersNumber)
-//                },
-//                disabledButtons = state.disabledNumberOfPlayersOptions,
-//            )
         }
     }
 
-
+    // Play button
     ConstraintLayout {
 
         val button = createRef()

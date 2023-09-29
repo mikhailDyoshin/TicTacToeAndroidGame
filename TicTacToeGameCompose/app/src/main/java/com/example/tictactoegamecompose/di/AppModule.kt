@@ -65,6 +65,7 @@ object AppModule {
         getShapeOfAIUseCase: GetShapeOfAIUseCase,
         handlePlayerMoveUseCase: HandlePlayerMoveUseCase,
         getContentBoardUseCase: GetContentBoardUseCase,
+        getGameStatusUseCase: GetGameStatusUseCase,
     ): GameWindowViewModel {
         return GameWindowViewModel(
             handleCreateGameUseCase,
@@ -75,6 +76,7 @@ object AppModule {
             getShapeOfAIUseCase,
             handlePlayerMoveUseCase,
             getContentBoardUseCase,
+            getGameStatusUseCase
         )
     }
 
