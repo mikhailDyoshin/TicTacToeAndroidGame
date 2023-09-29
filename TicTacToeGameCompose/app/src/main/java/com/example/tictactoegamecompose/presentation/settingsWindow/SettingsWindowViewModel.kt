@@ -3,8 +3,10 @@ package com.example.tictactoegamecompose.presentation.settingsWindow
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.example.tictactoegamecompose.data.repository.GameRepositoryImpl
-import com.example.tictactoegamecompose.data.storage.OfflineGameStorage
+import com.example.tictactoegamecompose.common.BoardSize
+import com.example.tictactoegamecompose.common.Figure
+import com.example.tictactoegamecompose.common.GameMode
+import com.example.tictactoegamecompose.common.NumberOfPlayers
 import com.example.tictactoegamecompose.domain.usecase.composite.HandleCreateGameUseCase
 import com.example.tictactoegamecompose.domain.usecase.getter.GetSettingsUseCase
 import com.example.tictactoegamecompose.domain.usecase.updater.UpdateAIFigureUseCase
@@ -42,19 +44,19 @@ class SettingsWindowViewModel @Inject constructor(
         val numberOfPlayers = currentSettings.numberOfPlayers
 
         when {
-            currentSettings.gameMode == "VS computer" -> {
+            currentSettings.gameMode == GameMode.VS_COMPUTER -> {
                 disabledButtons = mutableListOf("2", "3", "4")
                 resetNumberOfPlayers()
             }
 
-            currentSettings.boardSize == 3 -> {
+            currentSettings.boardSize == BoardSize.SMALL -> {
                 disabledButtons = mutableListOf("3", "4")
                 resetNumberOfPlayers()
             }
 
-            currentSettings.boardSize == 5 -> {
+            currentSettings.boardSize == BoardSize.MIDDLE -> {
                 disabledButtons = mutableListOf("4")
-                if (numberOfPlayers == 4) {
+                if (numberOfPlayers == NumberOfPlayers.FOUR) {
                     resetNumberOfPlayers()
                 } else {
                     // Do nothing
@@ -78,33 +80,39 @@ class SettingsWindowViewModel @Inject constructor(
     }
 
     private fun resetNumberOfPlayers() {
-        updateNumberOfPlayersUseCase.execute(numberOfPlayers = 2)
+        updateNumberOfPlayersUseCase.execute(numberOfPlayers = NumberOfPlayers.TWO)
     }
 
-    fun setGameMode(gameMode: String) {
+    fun setGameMode(gameMode: GameMode) {
         updateGameModeUseCase.execute(gameMode = gameMode)
         getSettings()
     }
 
-    fun setBoardSize(boardSize: String) {
-        val boardSizeInt = _state.value.boardSizeOptionsMapStringToInt[boardSize]!!
-        updateBoardSizeUseCase.execute(boardSize = boardSizeInt)
+    fun setBoardSize(boardSizeStr: String) {
+        val boardSize = _state.value.boardSizeOptionsMapStringToInt[boardSizeStr]!!
+        updateBoardSizeUseCase.execute(boardSize = boardSize)
         getSettings()
     }
 
     fun setNumberOfPlayers(numberOfPlayers: String) {
-        val numberOfPlayersInt = numberOfPlayers.toInt()
-        updateNumberOfPlayersUseCase.execute(numberOfPlayers = numberOfPlayersInt)
+        val numberOfPlayersInt = NumberOfPlayers.values().filter { it.number == numberOfPlayers.toInt() }
+        updateNumberOfPlayersUseCase.execute(numberOfPlayers = numberOfPlayersInt[0])
         getSettings()
     }
 
-    fun setPlayerFigure(playerFigure: String) {
+    fun setPlayerFigure(playerFigureStr: String) {
 
 
-        val shapeOfAI = when (playerFigure) {
-            "x" -> "o"
-            "o" -> "x"
-            else -> "o"
+        val shapeOfAI = when (playerFigureStr) {
+            "x" -> Figure.CIRCLE
+            "o" -> Figure.CROSS
+            else -> Figure.CIRCLE
+        }
+
+        val playerFigure = when (playerFigureStr) {
+            "x" -> Figure.CROSS
+            "o" -> Figure.CIRCLE
+            else -> Figure.CROSS
         }
 
         updatePlayerFigureUseCAse.execute(playerFigure = playerFigure)

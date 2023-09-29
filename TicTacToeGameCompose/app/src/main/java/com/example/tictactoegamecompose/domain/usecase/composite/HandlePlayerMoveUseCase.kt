@@ -81,12 +81,12 @@ class HandlePlayerMoveUseCase @Inject constructor(private val gameRepository: Ga
 
             val winner = if (gameOver.gameOverStatus) {
                 if (CheckForTieUseCase().execute(score = updatedScore).tieStatus) {
-                    WinnerModel(winner = "")
+                    WinnerModel(winner = null)
                 } else {
                     RevealWinnerUseCase().execute(score = updatedScore)
                 }
             } else {
-                WinnerModel(winner = "")
+                WinnerModel(winner = null)
             }
 
 

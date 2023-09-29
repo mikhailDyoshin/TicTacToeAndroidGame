@@ -1,7 +1,11 @@
 package com.example.tictactoegamecompose.data.storage.models
 
+import com.example.tictactoegamecompose.common.BoardSize
+import com.example.tictactoegamecompose.common.Figure
+import com.example.tictactoegamecompose.common.NumberOfPlayers
+
 data class GameInitParameters(
-    val boardSize: Int,
-    val players: List<String>,
-    val numberOfPlayers: Int,
+    val boardSize: BoardSize,
+    val players: List<Figure>,
+    val numberOfPlayers: NumberOfPlayers,
 )

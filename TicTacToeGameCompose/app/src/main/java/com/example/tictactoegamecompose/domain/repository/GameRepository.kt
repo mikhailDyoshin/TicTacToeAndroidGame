@@ -1,5 +1,9 @@
 package com.example.tictactoegamecompose.domain.repository
 
+import com.example.tictactoegamecompose.common.BoardSize
+import com.example.tictactoegamecompose.common.Figure
+import com.example.tictactoegamecompose.common.GameMode
+import com.example.tictactoegamecompose.common.NumberOfPlayers
 import com.example.tictactoegamecompose.domain.models.BoardStateModel
 import com.example.tictactoegamecompose.domain.models.ClickedCellsModel
 import com.example.tictactoegamecompose.domain.models.ContentBoardModel
@@ -49,11 +53,11 @@ interface GameRepository {
 
     fun getLogicBoard(): LogicBoardModel
 
-    fun getGameMode(): String
+    fun getGameMode(): GameMode
 
-    fun getShapeOfAI(): String
+    fun getShapeOfAI(): Figure
 
-    fun getBoardSize(): Int
+    fun getBoardSize(): BoardSize
 
     fun getGameOverStatistics(): GetGameOverStatisticsModel
 
@@ -67,17 +71,15 @@ interface GameRepository {
 
     fun updateGameStatus(gameStatus: GameStatusModel)
 
-//    fun updateSettings(settings: UpdateSettingsModel)
+    fun updateGameMode(gameMode: GameMode)
 
-    fun updateGameMode(gameMode: String)
+    fun updateBoardSize(boardSize: BoardSize)
 
-    fun updateBoardSize(boardSize: Int)
+    fun updateNumberOfPlayers(numberOfPlayers: NumberOfPlayers)
 
-    fun updateNumberOfPlayers(numberOfPlayers: Int)
+    fun updatePlayerFigure(playerFigure: Figure)
 
-    fun updatePlayerFigure(playerFigure: String)
-
-    fun updateShapeOfAI(shapeOfAI: String)
+    fun updateShapeOfAI(shapeOfAI: Figure)
 
 
 }

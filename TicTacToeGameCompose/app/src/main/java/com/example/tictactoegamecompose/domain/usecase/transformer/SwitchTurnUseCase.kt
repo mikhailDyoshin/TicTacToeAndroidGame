@@ -9,15 +9,13 @@ class SwitchTurnUseCase {
         var turnsCounter = model.currentTurn.currentTurnValue
         val numberOfPlayers = model.numberOfPlayers.numberOfPlayers
 
-        turnsCounter = (turnsCounter + 1) % numberOfPlayers
+        turnsCounter = (turnsCounter + 1) % numberOfPlayers.number
 
         val nextShape = model.shapes.shapeStrings[turnsCounter]
-        val nextImage = model.shapes.shapeImages[nextShape]!!
 
         return CurrentTurnModel(
             currentTurnValue = turnsCounter,
             currentTurnShape = nextShape,
-            currentTurnImageID = nextImage,
         )
     }
 

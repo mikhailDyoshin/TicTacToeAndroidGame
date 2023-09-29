@@ -1,3 +1,5 @@
 package com.example.tictactoegamecompose.domain.models
 
-data class NumberOfPlayersModel(val numberOfPlayers: Int)
+import com.example.tictactoegamecompose.common.NumberOfPlayers
+
+data class NumberOfPlayersModel(val numberOfPlayers: NumberOfPlayers)

@@ -1,9 +1,12 @@
 package com.example.tictactoegamecompose.domain.models
 
+import com.example.tictactoegamecompose.common.Figure
+import com.example.tictactoegamecompose.common.GameMode
+
 data class GetGameOverStatisticsModel(
     val score: ScoreModel,
     val winner: WinnerModel,
-    val images: ShapesModel,
-    val gameMode: String,
-    val figureOfAI: String,
+    val shapes: ShapesModel,
+    val gameMode: GameMode,
+    val figureOfAI: Figure,
 )

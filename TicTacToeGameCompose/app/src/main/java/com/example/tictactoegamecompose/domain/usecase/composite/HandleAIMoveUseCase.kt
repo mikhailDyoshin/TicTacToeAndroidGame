@@ -1,5 +1,6 @@
 package com.example.tictactoegamecompose.domain.usecase.composite
 
+import com.example.tictactoegamecompose.common.GameMode
 import com.example.tictactoegamecompose.domain.repository.GameRepository
 import com.example.tictactoegamecompose.domain.usecase.getter.GetCurrentTurnUseCase
 import com.example.tictactoegamecompose.domain.usecase.getter.GetGameModeUseCase
@@ -23,7 +24,7 @@ class HandleAIMoveUseCase @Inject constructor(private val gameRepository: GameRe
             val gameOver =
                 GetGameStatusUseCase(gameRepository = gameRepository).execute().gameOverStatus
 
-        if (gameMode == "VS computer" && currentTurn == shapeOfAI && !gameOver) {
+        if (gameMode == GameMode.VS_COMPUTER && currentTurn == shapeOfAI && !gameOver) {
 
             val logicBoardState = GetLogicBoardStateUseCase(gameRepository).execute()
 

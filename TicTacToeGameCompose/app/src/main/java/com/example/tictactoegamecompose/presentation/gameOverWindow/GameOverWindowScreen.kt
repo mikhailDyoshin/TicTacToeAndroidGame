@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.tictactoegamecompose.common.GameMode
 import com.example.tictactoegamecompose.presentation.svgColorSetter
 
 @Composable
@@ -38,7 +39,6 @@ fun GameOverWindowScreen(
 
     val score = state.score.score
     val winner = state.winner.winner
-    val images = state.images.shapeImages
     val gameMode = state.gameMode
     val figureOfAI = state.figureOfAI
 
@@ -54,12 +54,12 @@ fun GameOverWindowScreen(
 
         ) {
         // Winner
-        if (winner == "") {
+        if (winner == null) {
             Text(text = "Tie", fontSize = h1FontSize.sp)
         } else {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Image(
-                    painter = painterResource(id = images[winner]!!),
+                    painter = painterResource(id = winner.imageID),
                     contentDescription = "Current turn",
                     modifier = Modifier
                         .size(72.dp)
@@ -88,12 +88,12 @@ fun GameOverWindowScreen(
                         fontSize = textFontSize.sp
                     )
                     Image(
-                        painter = painterResource(id = images[player]!!),
+                        painter = painterResource(id = player.imageID),
                         contentDescription = "Current turn",
                         modifier = Modifier.padding(top = 3.dp),
                         colorFilter = ColorFilter.tint(svgColor)
                     )
-                    if (gameMode == "VS computer" && player == figureOfAI) {
+                    if (gameMode == GameMode.VS_COMPUTER && player == figureOfAI) {
                         Text(
                             text = "(AI)",
                             fontSize = 11.sp,

@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.tictactoegamecompose.common.GameMode
 import com.example.tictactoegamecompose.presentation.settingsWindow.components.RadioButtonGroup
 
 @SuppressLint("MutableCollectionMutableState", "UnrememberedMutableState")
@@ -28,29 +29,40 @@ fun SettingsWindow(
     ) {
         // Game mode configuration
         RadioButtonGroup(
-            selectedOption = state.gameMode,
+            selectedOption = state.gameMode.str,
             options = state.gameModeOptions,
             annotation = "Game mode",
             setConfiguration = { mode ->
-                viewModel.setGameMode(gameMode = mode)
+                when (mode) {
+                    "VS player" -> {
+                        viewModel.setGameMode(gameMode = GameMode.VS_PLAYER)
+                    }
+                    "VS computer" -> {
+                        viewModel.setGameMode(gameMode = GameMode.VS_COMPUTER)
+                    }
+                    else -> {
+                        viewModel.setGameMode(gameMode = GameMode.VS_PLAYER)
+                    }
+            }
+
             },
             disabledButtons = mutableListOf(),
         )
 
         // Board size configuration
         RadioButtonGroup(
-            selectedOption = state.boardSizeOptionsMapIntToString[state.boardSize]!!,
+            selectedOption = state.boardSizeOptionsMapIntToString[state.boardSize.size]!!,
             options = state.boardSizeOptions,
             annotation = "Board size",
             setConfiguration = { boardSize ->
-                viewModel.setBoardSize(boardSize = boardSize)
+                viewModel.setBoardSize(boardSizeStr = boardSize)
             },
             disabledButtons = mutableListOf(),
         )
 
         when (state.gameMode) {
-            "VS player" -> RadioButtonGroup(
-                selectedOption = state.numberOfPlayers.toString(),
+            GameMode.VS_PLAYER -> RadioButtonGroup(
+                selectedOption = state.numberOfPlayers.number.toString(),
                 options = state.numberOfPlayersOptions,
                 annotation = "Players",
                 setConfiguration = { playersNumber ->
@@ -59,8 +71,8 @@ fun SettingsWindow(
                 disabledButtons = state.disabledNumberOfPlayersOptions,
             )
 
-            "VS computer" -> RadioButtonGroup(
-                selectedOption = state.playerFigure,
+            GameMode.VS_COMPUTER -> RadioButtonGroup(
+                selectedOption = state.playerFigure.str,
                 options = state.turnOptions,
                 annotation = "Play for",
                 setConfiguration = { playerFigure ->
@@ -71,15 +83,15 @@ fun SettingsWindow(
                 showImages = true
             )
 
-            else -> RadioButtonGroup(
-                selectedOption = state.numberOfPlayers.toString(),
-                options = state.numberOfPlayersOptions,
-                annotation = "Players",
-                setConfiguration = { playersNumber ->
-                    viewModel.setNumberOfPlayers(playersNumber)
-                },
-                disabledButtons = state.disabledNumberOfPlayersOptions,
-            )
+//            else -> RadioButtonGroup(
+//                selectedOption = state.numberOfPlayers.toString(),
+//                options = state.numberOfPlayersOptions,
+//                annotation = "Players",
+//                setConfiguration = { playersNumber ->
+//                    viewModel.setNumberOfPlayers(playersNumber)
+//                },
+//                disabledButtons = state.disabledNumberOfPlayersOptions,
+//            )
         }
     }
 

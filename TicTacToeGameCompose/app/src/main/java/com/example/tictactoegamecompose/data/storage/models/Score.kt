@@ -1,3 +1,5 @@
 package com.example.tictactoegamecompose.data.storage.models
 
-data class Score(var score: MutableMap<String, Int>)
+import com.example.tictactoegamecompose.common.Figure
+
+data class Score(var score: MutableMap<Figure, Int>)

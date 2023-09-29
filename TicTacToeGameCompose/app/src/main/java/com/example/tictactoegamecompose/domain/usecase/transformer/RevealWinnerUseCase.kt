@@ -6,7 +6,7 @@ import com.example.tictactoegamecompose.domain.models.WinnerModel
 class RevealWinnerUseCase {
 
     fun execute(score: ScoreModel): WinnerModel {
-        return WinnerModel(winner = score.score.maxByOrNull { it.value }?.key ?: "")
+        return WinnerModel(winner = score.score.maxByOrNull { it.value }?.key)
     }
 
 }

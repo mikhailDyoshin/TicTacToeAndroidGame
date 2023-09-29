@@ -1,11 +1,9 @@
 package com.example.tictactoegamecompose.domain.usecase.composite
 
-import com.example.tictactoegamecompose.data.repository.GameRepositoryImpl
 import com.example.tictactoegamecompose.domain.models.FigureOutShapesInGameModel
 import com.example.tictactoegamecompose.domain.models.GameInitDataModel
 import com.example.tictactoegamecompose.domain.repository.GameRepository
 import com.example.tictactoegamecompose.domain.usecase.getter.GetBoardSizeUseCase
-import com.example.tictactoegamecompose.domain.usecase.getter.GetLogicBoardUseCase
 import com.example.tictactoegamecompose.domain.usecase.getter.GetNumberOfPlayersUseCase
 import com.example.tictactoegamecompose.domain.usecase.transformer.FigureOutShapesInGameUseCase
 import com.example.tictactoegamecompose.domain.usecase.updater.CreateGameUseCase

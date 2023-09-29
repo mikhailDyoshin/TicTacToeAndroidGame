@@ -23,7 +23,7 @@ class GameOverWindowViewModel @Inject constructor(
         _state.value = GameOverWindowState(
             score = gameOverStats.score,
             winner = gameOverStats.winner,
-            images = gameOverStats.images,
+            images = gameOverStats.shapes,
             gameMode = gameOverStats.gameMode,
             figureOfAI = gameOverStats.figureOfAI,
         )

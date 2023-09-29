@@ -1,6 +1,7 @@
 package com.example.tictactoegamecompose.domain.models
 
+import com.example.tictactoegamecompose.common.Figure
+
 data class ShapesModel(
-    val shapeStrings: List<String>,
-    val shapeImages: Map<String, Int>,
+    val shapeStrings: List<Figure>,
 )

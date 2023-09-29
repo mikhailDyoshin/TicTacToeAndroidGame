@@ -4,6 +4,7 @@ package com.example.tictactoegamecompose.presentation.gameWindow
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import com.example.tictactoegamecompose.common.GameMode
 import com.example.tictactoegamecompose.domain.usecase.composite.HandleAIMoveUseCase
 import com.example.tictactoegamecompose.domain.usecase.composite.HandleCreateGameUseCase
 import com.example.tictactoegamecompose.domain.usecase.composite.HandlePlayerMoveUseCase
@@ -44,7 +45,7 @@ class GameWindowViewModel @Inject constructor(
         val boardState = getBoardStateUseCase.execute()
 
         _state.value = BoardState(
-            currentTurnImageID = boardState.currentTurn.currentTurnImageID,
+            currentTurnImageID = boardState.currentTurn.currentTurnShape.imageID,
             currentScore = boardState.currentScore,
             boardSize = boardState.boardSize,
             gameMode = boardState.gameMode,
@@ -60,7 +61,7 @@ class GameWindowViewModel @Inject constructor(
         val currentTurnShape = getCurrentTurnUseCase.execute().currentTurnShape
         val shapeOfAI = getShapeOfAIUseCase.execute()
 
-        if (gameMode == "VS computer") {
+        if (gameMode == GameMode.VS_COMPUTER) {
             if (currentTurnShape != shapeOfAI) {
                 handlePlayerMoveUseCase.execute(listOf(row, col))
             }

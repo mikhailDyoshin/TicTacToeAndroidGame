@@ -1,3 +1,5 @@
 package com.example.tictactoegamecompose.data.storage.models
 
-data class Winner(var winner: String = "")
+import com.example.tictactoegamecompose.common.Figure
+
+data class Winner(var winner: Figure? = null)

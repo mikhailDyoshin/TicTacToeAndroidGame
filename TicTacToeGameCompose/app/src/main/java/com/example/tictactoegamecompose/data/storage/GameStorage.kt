@@ -1,5 +1,9 @@
 package com.example.tictactoegamecompose.data.storage
 
+import com.example.tictactoegamecompose.common.BoardSize
+import com.example.tictactoegamecompose.common.Figure
+import com.example.tictactoegamecompose.common.GameMode
+import com.example.tictactoegamecompose.common.NumberOfPlayers
 import com.example.tictactoegamecompose.data.storage.models.GameCurrentState
 import com.example.tictactoegamecompose.data.storage.models.GameInitParameters
 import com.example.tictactoegamecompose.data.storage.models.GameSettings
@@ -23,15 +27,15 @@ interface GameStorage {
 
     fun updateGameStatus(gameUpdateStatus: GameUpdateStatus)
 
-    fun updateGameMode(gameMode: String)
+    fun updateGameMode(gameMode: GameMode)
 
-    fun updateBoardSize(boardSize: Int)
+    fun updateBoardSize(boardSize: BoardSize)
 
-    fun updateNumberOfPlayers(numberOfPlayers: Int)
+    fun updateNumberOfPlayers(numberOfPlayers: NumberOfPlayers)
 
-    fun updatePlayerFigure(playerFigure: String)
+    fun updatePlayerFigure(playerFigure: Figure)
 
-    fun updateShapeOfAI(shapeOfAI: String)
+    fun updateShapeOfAI(shapeOfAI: Figure)
 
 
 }

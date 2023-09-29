@@ -1,3 +1,5 @@
 package com.example.tictactoegamecompose.domain.models
 
-data class WinnerModel(val winner: String = "")
+import com.example.tictactoegamecompose.common.Figure
+
+data class WinnerModel(val winner: Figure? = null)

@@ -16,7 +16,7 @@ class CheckForComboUseCase {
     ): Boolean {
 
         val board = boardState.board
-        val shape = boardState.currentTurn
+        val shape = boardState.currentTurn.str
         val crossedCells = boardState.crossedCells
         val comboNumber = boardState.comboNumber
 

@@ -1,5 +1,9 @@
 package com.example.tictactoegamecompose.data.repository
 
+import com.example.tictactoegamecompose.common.BoardSize
+import com.example.tictactoegamecompose.common.Figure
+import com.example.tictactoegamecompose.common.GameMode
+import com.example.tictactoegamecompose.common.NumberOfPlayers
 import com.example.tictactoegamecompose.data.storage.OfflineGameStorage
 import com.example.tictactoegamecompose.data.storage.models.CurrentTurn
 import com.example.tictactoegamecompose.data.storage.models.GameInitParameters
@@ -110,7 +114,6 @@ class GameRepositoryImpl @Inject constructor(private val gameStorage: OfflineGam
         return CurrentTurnModel(
             currentTurnValue = currentTurn.currentTurnValue,
             currentTurnShape = currentTurn.currentTurnShape,
-            currentTurnImageID = currentTurn.currentTurnImageID,
         )
     }
 
@@ -125,7 +128,6 @@ class GameRepositoryImpl @Inject constructor(private val gameStorage: OfflineGam
     override fun getDrawableContent(): ShapesModel {
         return ShapesModel(
             shapeStrings = Shapes().shapes,
-            shapeImages = Shapes().shapeImages
         )
     }
 
@@ -139,15 +141,15 @@ class GameRepositoryImpl @Inject constructor(private val gameStorage: OfflineGam
         return LogicBoardModel(board = gameStorage.getGameState().board.logicBoard)
     }
 
-    override fun getGameMode(): String {
+    override fun getGameMode(): GameMode {
         return gameStorage.getSettings().gameMode
     }
 
-    override fun getShapeOfAI(): String {
+    override fun getShapeOfAI(): Figure {
         return gameStorage.getSettings().shapeOfAI
     }
 
-    override fun getBoardSize(): Int {
+    override fun getBoardSize(): BoardSize {
         return gameStorage.getSettings().boardSize
     }
 
@@ -155,8 +157,7 @@ class GameRepositoryImpl @Inject constructor(private val gameStorage: OfflineGam
         return GetGameOverStatisticsModel(
             score = ScoreModel(score = gameStorage.getGameState().score.score),
             winner = WinnerModel(winner = gameStorage.getGameState().winner.winner),
-            images = ShapesModel(
-                shapeImages = Shapes().shapeImages,
+            shapes = ShapesModel(
                 shapeStrings = Shapes().shapes
             ),
             gameMode = gameStorage.getSettings().gameMode,
@@ -189,7 +190,6 @@ class GameRepositoryImpl @Inject constructor(private val gameStorage: OfflineGam
         val newTurn = CurrentTurn(
             currentTurnValue = gameState.turn.currentTurnValue,
             currentTurnShape = gameState.turn.currentTurnShape,
-            currentTurnImageID = gameState.turn.currentTurnImageID,
         )
 
         val newState = GameUpdateState(
@@ -211,23 +211,23 @@ class GameRepositoryImpl @Inject constructor(private val gameStorage: OfflineGam
         )
     }
 
-    override fun updateGameMode(gameMode: String) {
+    override fun updateGameMode(gameMode: GameMode) {
         gameStorage.updateGameMode(gameMode = gameMode)
     }
 
-    override fun updateBoardSize(boardSize: Int) {
+    override fun updateBoardSize(boardSize: BoardSize) {
         gameStorage.updateBoardSize(boardSize = boardSize)
     }
 
-    override fun updateNumberOfPlayers(numberOfPlayers: Int) {
+    override fun updateNumberOfPlayers(numberOfPlayers: NumberOfPlayers) {
         gameStorage.updateNumberOfPlayers(numberOfPlayers = numberOfPlayers)
     }
 
-    override fun updatePlayerFigure(playerFigure: String) {
+    override fun updatePlayerFigure(playerFigure: Figure) {
         gameStorage.updatePlayerFigure(playerFigure = playerFigure)
     }
 
-    override fun updateShapeOfAI(shapeOfAI: String) {
+    override fun updateShapeOfAI(shapeOfAI: Figure) {
         gameStorage.updateShapeOfAI(shapeOfAI = shapeOfAI)
     }
 }

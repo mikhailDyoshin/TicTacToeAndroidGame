@@ -14,7 +14,7 @@ class GetBoardStateUseCase @Inject constructor(private val gameRepository: GameR
             boardSize = gameRepository.getBoardSize(),
             gameMode = gameRepository.getGameMode(),
             shapeOfAI = gameRepository.getShapeOfAI(),
-            imagesIDs = gameRepository.getDrawableContent().shapeImages,
+            imagesIDs = gameRepository.getDrawableContent().shapeStrings,
         )
     }
 

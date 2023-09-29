@@ -33,7 +33,7 @@ class CalculateAINextMoveUseCase(boardState: BoardStateModel) {
     private val comboNumber = boardStateCopy.comboNumber
 
     fun execute(): List<Int> {
-        return minimax(board, aiPlayer, Int.MIN_VALUE, Int.MAX_VALUE).coordinates
+        return minimax(board, aiPlayer.str, Int.MIN_VALUE, Int.MAX_VALUE).coordinates
     }
 
     private fun getEmptyCellsCoordinates(
@@ -114,8 +114,8 @@ class CalculateAINextMoveUseCase(boardState: BoardStateModel) {
                     board[emptyCell[0]][emptyCell[1]] = player
 
                     //if collect the score resulted from calling minimax on the opponent of the current player
-                    if (player == aiPlayer) {
-                        val moveScore = minimax(board, aiPlayer, alpha, beta).score
+                    if (player == aiPlayer.str) {
+                        val moveScore = minimax(board, aiPlayer.str, alpha, beta).score
                         val newAlpha = max(alpha, moveScore)
 
                         if (newAlpha >= beta) {
@@ -125,7 +125,7 @@ class CalculateAINextMoveUseCase(boardState: BoardStateModel) {
                         }
 
                     } else {
-                        val moveScore = minimax(board, aiPlayer, alpha, beta).score
+                        val moveScore = minimax(board, aiPlayer.str, alpha, beta).score
                         val newBeta = min(beta, moveScore)
 
                         if (newBeta <= alpha) {
@@ -148,7 +148,7 @@ class CalculateAINextMoveUseCase(boardState: BoardStateModel) {
                 var bestMove = 0
                 // If it's AI player in the terminate node
                 // Then loop over the moves and choose the move with the highest score
-                if (player == aiPlayer) {
+                if (player == aiPlayer.str) {
                     var worstScore = -10000
                     for ((i, _) in moves.withIndex()) {
                         if (moves[i].score > worstScore) {

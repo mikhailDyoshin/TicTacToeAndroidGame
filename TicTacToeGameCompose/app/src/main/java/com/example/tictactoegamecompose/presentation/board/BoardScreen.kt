@@ -17,6 +17,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.tictactoegamecompose.R
+import com.example.tictactoegamecompose.common.BoardSize
+import com.example.tictactoegamecompose.common.Figure
+import com.example.tictactoegamecompose.common.GameMode
 import com.example.tictactoegamecompose.domain.models.ScoreModel
 import com.example.tictactoegamecompose.presentation.cell.CellScreen
 import com.example.tictactoegamecompose.presentation.cell.CellState
@@ -37,7 +40,7 @@ fun BoardScreen(
 
     val score = state.currentScore.score
 
-    val size = state.boardSize
+    val size = state.boardSize.size
 
     val contentBoard = state.contentBoard
 
@@ -78,15 +81,15 @@ fun BoardScreen(
             horizontalArrangement = Arrangement.spacedBy(10.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            for (player: String in score.keys) {
+            for (player: Figure in score.keys) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Image(
-                        painter = painterResource(id = state.imagesIDs[player]!!),
+                        painter = painterResource(id = player.imageID),
                         contentDescription = "Current turn",
                         modifier = Modifier.padding(top = 2.dp),
                         colorFilter = ColorFilter.tint(svgColor),
                     )
-                    if (state.gameMode == "VS computer" && player == state.shapeOfAI) {
+                    if (state.gameMode == GameMode.VS_COMPUTER && player == state.shapeOfAI) {
                         Text(
                             text = "(AI)",
                             fontSize = 11.sp,
@@ -126,16 +129,18 @@ fun BoardPreview() {
     BoardScreen(
         state = BoardState(
             currentTurnImageID = R.drawable.cross,
-            currentScore = ScoreModel(score = mutableMapOf("x" to 0, "o" to 1, "*" to 1, "+" to 1)),
-            boardSize = 7,
-            gameMode = "VS player",
-            shapeOfAI = "o",
-            imagesIDs = mutableMapOf(
-                "x" to R.drawable.cross,
-                "o" to R.drawable.circle,
-                "*" to R.drawable.triangle,
-                "+" to R.drawable.rectangle,
+            currentScore = ScoreModel(
+                score = mutableMapOf(
+                    Figure.CROSS to 0,
+                    Figure.CIRCLE to 1,
+                    Figure.TRIANGLE to 1,
+                    Figure.RECTANGLE to 1
+                )
             ),
+            boardSize = BoardSize.BIG,
+            gameMode = GameMode.VS_PLAYER,
+            shapeOfAI = Figure.CIRCLE,
+            imagesIDs = Figure.values().map { it },
             contentBoard = listOf(
                 listOf(
                     CellState(imageID = R.drawable.circle, crossed = true),
