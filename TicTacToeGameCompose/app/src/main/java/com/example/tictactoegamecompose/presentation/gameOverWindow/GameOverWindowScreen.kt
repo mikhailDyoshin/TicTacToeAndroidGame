@@ -13,20 +13,23 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.tictactoegamecompose.common.GameMode
+import com.example.tictactoegamecompose.presentation.previewStates.PreviewStates
 import com.example.tictactoegamecompose.presentation.svgColorSetter
 
 @Composable
 fun GameOverWindowScreen(
-    restartGame: () -> Unit,
-    viewModel: GameOverWindowViewModel = viewModel(),
+    state: GameOverWindowState,
+    navigateToGame: () -> Unit,
+    getGameOverStatistics: () -> Unit,
 ) {
 
-    viewModel.getGameOverStatistics()
+    getGameOverStatistics()
 
     // Style values
     val h1FontSize = 44
@@ -34,8 +37,6 @@ fun GameOverWindowScreen(
     val textFontSize = 24
     val buttonFontSize = 40
     val spaceBetween = 60
-
-    val state = viewModel.state.value
 
     val score = state.score.score
     val winner = state.winner.winner
@@ -49,6 +50,7 @@ fun GameOverWindowScreen(
 
     // -------------------- Rendering Section --------------------
     Column(
+        modifier = Modifier.fillMaxWidth().fillMaxHeight(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
 
@@ -110,7 +112,7 @@ fun GameOverWindowScreen(
 
         // Replay button
         Button(
-            onClick = { restartGame() },
+            onClick = { navigateToGame() },
             modifier = Modifier.padding(top = spaceBetween.dp)
         ) {
             Text(
@@ -124,6 +126,8 @@ fun GameOverWindowScreen(
 @Composable
 fun GameOverWindowPreview() {
     GameOverWindowScreen(
-        restartGame = {},
+        state = PreviewStates.GAVE_OVER_STATE,
+        navigateToGame = {},
+        getGameOverStatistics = {},
     )
 }

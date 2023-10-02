@@ -7,7 +7,7 @@ import com.example.tictactoegamecompose.domain.models.ScoreModel
 import com.example.tictactoegamecompose.presentation.cell.CellState
 
 data class BoardState(
-    val currentTurnImageID: Int = 0,
+    val currentTurnImageID: Int = Figure.CROSS.imageID,
     val currentScore: ScoreModel = ScoreModel(score = mutableMapOf()),
     val boardSize: BoardSize = BoardSize.SMALL,
     val gameMode: GameMode = GameMode.VS_PLAYER,

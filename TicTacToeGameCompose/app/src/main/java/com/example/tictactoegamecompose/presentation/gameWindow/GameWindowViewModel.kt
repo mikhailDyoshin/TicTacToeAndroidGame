@@ -16,7 +16,6 @@ import com.example.tictactoegamecompose.domain.usecase.getter.GetGameStatusUseCa
 import com.example.tictactoegamecompose.domain.usecase.getter.GetShapeOfAIUseCase
 import com.example.tictactoegamecompose.presentation.board.BoardState
 import com.example.tictactoegamecompose.presentation.cell.CellState
-import com.example.tictactoegamecompose.presentation.myApp.MyAppState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

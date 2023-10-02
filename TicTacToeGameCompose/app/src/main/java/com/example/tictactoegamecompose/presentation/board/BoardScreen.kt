@@ -31,7 +31,6 @@ fun BoardScreen(
     state: BoardState,
     simulateMoveOfAI: () -> Unit,
     updateState: () -> Unit,
-    checkGameStatus: () -> Unit,
     changeGameState: (row: Int, col: Int) -> Unit,
 ) {
 
@@ -49,7 +48,6 @@ fun BoardScreen(
     LaunchedEffect(currentShapeImage) {
         simulateMoveOfAI()
         updateState()
-        checkGameStatus()
     }
 
     // -------------------- Rendering section --------------------
@@ -109,7 +107,6 @@ fun BoardScreen(
                             row = row,
                             col = col,
                             cellState = contentBoard[row][col],
-                            checkGameStatus = checkGameStatus,
                             updateBoard = { updateState() },
                             changeGameState = { y, x -> changeGameState(y, x) }
                         )
@@ -211,7 +208,6 @@ fun BoardPreview() {
         ),
         simulateMoveOfAI = {},
         updateState = {},
-        checkGameStatus = {},
         changeGameState = { _, _ -> }
     )
 }

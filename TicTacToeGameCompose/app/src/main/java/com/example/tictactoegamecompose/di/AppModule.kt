@@ -21,7 +21,6 @@ import com.example.tictactoegamecompose.domain.usecase.updater.UpdateNumberOfPla
 import com.example.tictactoegamecompose.domain.usecase.updater.UpdatePlayerFigureUseCAse
 import com.example.tictactoegamecompose.presentation.gameOverWindow.GameOverWindowViewModel
 import com.example.tictactoegamecompose.presentation.gameWindow.GameWindowViewModel
-import com.example.tictactoegamecompose.presentation.myApp.MyAppViewModel
 import com.example.tictactoegamecompose.presentation.settingsWindow.SettingsWindowViewModel
 import dagger.Module
 import dagger.Provides
@@ -78,15 +77,6 @@ object AppModule {
             getContentBoardUseCase,
             getGameStatusUseCase
         )
-    }
-
-    @Provides
-    @Singleton
-    fun provideMyAppViewModel(
-        getGameStatusUseCase: GetGameStatusUseCase,
-        handleCreateGameUseCase: HandleCreateGameUseCase,
-    ): MyAppViewModel {
-        return MyAppViewModel(getGameStatusUseCase, handleCreateGameUseCase)
     }
 
     @Provides

@@ -25,11 +25,9 @@ fun CellScreen(
     row: Int,
     col: Int,
     cellState: CellState,
-    checkGameStatus: () -> Unit,
     updateBoard: () -> Unit,
     changeGameState: (row: Int, col: Int) -> Unit,
 ) {
-
 
 
     // --------------------- States ---------------------
@@ -53,9 +51,8 @@ fun CellScreen(
     // --------------------- Rendering Section ---------------------
     IconButton(
         onClick = {
-            changeGameState(row,  col)
+            changeGameState(row, col)
             updateBoard()
-            checkGameStatus()
         },
         modifier = Modifier
             .border(1.dp, svgColor)
@@ -82,7 +79,6 @@ fun CellEmptyPreview() {
         row = 0,
         col = 0,
         cellState = CellState(imageID = 0, crossed = false),
-        checkGameStatus = {},
         updateBoard = {},
         changeGameState = { _, _ -> },
     )
@@ -95,7 +91,6 @@ fun CellCrossPreview() {
         row = 0,
         col = 0,
         cellState = CellState(imageID = R.drawable.cross, crossed = false),
-        checkGameStatus = {},
         updateBoard = {},
         changeGameState = { _, _ -> },
     )
@@ -108,7 +103,6 @@ fun CellCirclePreview() {
         row = 0,
         col = 0,
         cellState = CellState(imageID = R.drawable.circle, crossed = false),
-        checkGameStatus = {},
         updateBoard = {},
         changeGameState = { _, _ -> },
     )
@@ -121,7 +115,6 @@ fun CellTrianglePreview() {
         row = 0,
         col = 0,
         cellState = CellState(imageID = R.drawable.triangle, crossed = false),
-        checkGameStatus = {},
         updateBoard = {},
         changeGameState = { _, _ -> },
     )
@@ -134,7 +127,6 @@ fun CellRectanglePreview() {
         row = 0,
         col = 0,
         cellState = CellState(imageID = R.drawable.rectangle, crossed = false),
-        checkGameStatus = {},
         updateBoard = {},
         changeGameState = { _, _ -> },
     )
@@ -147,7 +139,6 @@ fun CellCrossedPreview() {
         row = 0,
         col = 0,
         cellState = CellState(imageID = R.drawable.cross, crossed = true),
-        checkGameStatus = {},
         updateBoard = {},
         changeGameState = { _, _ -> },
     )

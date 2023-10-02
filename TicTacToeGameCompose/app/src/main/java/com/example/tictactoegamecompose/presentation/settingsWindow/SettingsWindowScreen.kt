@@ -1,28 +1,34 @@
 package com.example.tictactoegamecompose.presentation.settingsWindow
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.tictactoegamecompose.common.GameMode
 import com.example.tictactoegamecompose.presentation.settingsWindow.components.RadioButtonGroup
 
 @Composable
 fun SettingsWindow(
-    closeSettingsWindow: () -> Unit,
-    viewModel: SettingsWindowViewModel = viewModel(),
+    state: SettingsWindowState,
+    navigateToGame: () -> Unit,
+    setGameMode: (gameMode: GameMode) -> Unit,
+    setBoardSize: (boardSize: String) -> Unit,
+    setNumberOfPlayers: (numberOfPlayers: String) -> Unit,
+    setPlayerFigure: (figure: String) -> Unit,
 ) {
 
-    val state = viewModel.state.value
-    
     Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight(),
+        verticalArrangement = Arrangement.SpaceAround,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         // Game mode configuration
@@ -33,15 +39,17 @@ fun SettingsWindow(
             setConfiguration = { mode ->
                 when (mode) {
                     GameMode.VS_PLAYER.str -> {
-                        viewModel.setGameMode(gameMode = GameMode.VS_PLAYER)
+                        setGameMode(GameMode.VS_PLAYER)
                     }
+
                     GameMode.VS_COMPUTER.str -> {
-                        viewModel.setGameMode(gameMode = GameMode.VS_COMPUTER)
+                        setGameMode(GameMode.VS_COMPUTER)
                     }
+
                     else -> {
-                        viewModel.setGameMode(gameMode = GameMode.VS_PLAYER)
+                        setGameMode(GameMode.VS_PLAYER)
                     }
-            }
+                }
 
             },
             disabledButtons = mutableListOf(),
@@ -53,7 +61,7 @@ fun SettingsWindow(
             options = state.boardSizeOptions,
             annotation = "Board size",
             setConfiguration = { boardSize ->
-                viewModel.setBoardSize(boardSizeStr = boardSize)
+                setBoardSize(boardSize)
             },
             disabledButtons = mutableListOf(),
         )
@@ -65,7 +73,7 @@ fun SettingsWindow(
                 options = state.numberOfPlayersOptions,
                 annotation = "Players",
                 setConfiguration = { playersNumber ->
-                    viewModel.setNumberOfPlayers(playersNumber)
+                    setNumberOfPlayers(playersNumber)
                 },
                 disabledButtons = state.disabledNumberOfPlayersOptions,
             )
@@ -75,7 +83,7 @@ fun SettingsWindow(
                 options = state.turnOptions,
                 annotation = "Play for",
                 setConfiguration = { playerFigure ->
-                    viewModel.setPlayerFigure(playerFigure)
+                    setPlayerFigure(playerFigure)
                 },
                 disabledButtons = mutableListOf(),
                 images = state.figureImages,
@@ -83,29 +91,28 @@ fun SettingsWindow(
             )
 
         }
-    }
 
-    // Play button
-    ConstraintLayout {
-
-        val button = createRef()
-
-        Button(onClick = {
-            viewModel.restartGame()
-            closeSettingsWindow()
-        },
-            modifier = Modifier.constrainAs(button) {
-                bottom.linkTo(parent.bottom, margin = 120.dp)
-                start.linkTo(parent.start)
-                end.linkTo(parent.end)
-            }) {
+        // Play button
+        Button(
+            onClick = {
+                navigateToGame()
+            },
+        ) {
             Text(text = "Play", fontSize = 46.sp)
         }
     }
+
 }
 
 @Preview
 @Composable
 fun SettingWindowPreview() {
-    SettingsWindow(closeSettingsWindow = {})
+    SettingsWindow(
+        state = SettingsWindowState(),
+        navigateToGame = {},
+        setGameMode = {},
+        setBoardSize = {},
+        setNumberOfPlayers = {},
+        setPlayerFigure = {},
+    )
 }
