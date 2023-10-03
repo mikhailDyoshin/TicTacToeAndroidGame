@@ -25,11 +25,8 @@ import com.example.tictactoegamecompose.presentation.svgColorSetter
 @Composable
 fun GameOverWindowScreen(
     state: GameOverWindowState,
-    navigateToGame: () -> Unit,
-    getGameOverStatistics: () -> Unit,
+    navigateToSettings: () -> Unit,
 ) {
-
-    getGameOverStatistics()
 
     // Style values
     val h1FontSize = 44
@@ -47,10 +44,11 @@ fun GameOverWindowScreen(
 
     val svgColor = svgColorSetter()
 
-
     // -------------------- Rendering Section --------------------
     Column(
-        modifier = Modifier.fillMaxWidth().fillMaxHeight(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
 
@@ -112,7 +110,9 @@ fun GameOverWindowScreen(
 
         // Replay button
         Button(
-            onClick = { navigateToGame() },
+            onClick = {
+                navigateToSettings()
+            },
             modifier = Modifier.padding(top = spaceBetween.dp)
         ) {
             Text(
@@ -127,7 +127,6 @@ fun GameOverWindowScreen(
 fun GameOverWindowPreview() {
     GameOverWindowScreen(
         state = PreviewStates.GAVE_OVER_STATE,
-        navigateToGame = {},
-        getGameOverStatistics = {},
+        navigateToSettings = {},
     )
 }

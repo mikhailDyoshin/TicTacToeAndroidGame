@@ -48,9 +48,11 @@ object AppModule {
     @Provides
     @Singleton
     fun provideGameOverWindowViewModel(
-        getGameOverStatisticsUseCase: GetGameOverStatisticsUseCase
+        getGameOverStatisticsUseCase: GetGameOverStatisticsUseCase,
     ): GameOverWindowViewModel {
-        return GameOverWindowViewModel(getGameOverStatisticsUseCase)
+        return GameOverWindowViewModel(
+            getGameOverStatisticsUseCase,
+        )
     }
 
     @Provides

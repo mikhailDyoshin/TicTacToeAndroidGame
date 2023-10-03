@@ -22,6 +22,7 @@ fun SettingsWindow(
     setBoardSize: (boardSize: String) -> Unit,
     setNumberOfPlayers: (numberOfPlayers: String) -> Unit,
     setPlayerFigure: (figure: String) -> Unit,
+    restartGame: () -> Unit,
 ) {
 
     Column(
@@ -95,6 +96,7 @@ fun SettingsWindow(
         // Play button
         Button(
             onClick = {
+                restartGame()
                 navigateToGame()
             },
         ) {
@@ -114,5 +116,6 @@ fun SettingWindowPreview() {
         setBoardSize = {},
         setNumberOfPlayers = {},
         setPlayerFigure = {},
+        restartGame = {},
     )
 }

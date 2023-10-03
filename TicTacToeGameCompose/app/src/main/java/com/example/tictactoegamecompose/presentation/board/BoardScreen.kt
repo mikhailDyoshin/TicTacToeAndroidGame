@@ -16,13 +16,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.tictactoegamecompose.R
-import com.example.tictactoegamecompose.common.BoardSize
 import com.example.tictactoegamecompose.common.Figure
 import com.example.tictactoegamecompose.common.GameMode
-import com.example.tictactoegamecompose.domain.models.ScoreModel
 import com.example.tictactoegamecompose.presentation.cell.CellScreen
-import com.example.tictactoegamecompose.presentation.cell.CellState
+import com.example.tictactoegamecompose.presentation.previewStates.PreviewStates
 import com.example.tictactoegamecompose.presentation.svgColorSetter
 
 
@@ -45,9 +42,14 @@ fun BoardScreen(
 
     val svgColor = svgColorSetter()
 
-    LaunchedEffect(currentShapeImage) {
-        simulateMoveOfAI()
-        updateState()
+    LaunchedEffect(state) {
+        if (state.gameMode == GameMode.VS_COMPUTER) {
+            if (state.currentTurnImageID == state.shapeOfAI.imageID) {
+                simulateMoveOfAI()
+                updateState()
+            }
+
+        }
     }
 
     // -------------------- Rendering section --------------------
@@ -103,13 +105,11 @@ fun BoardScreen(
             for (row in 0 until size) {
                 Row {
                     for (col in 0 until size) {
-                        CellScreen(
-                            row = row,
+                        CellScreen(row = row,
                             col = col,
                             cellState = contentBoard[row][col],
                             updateBoard = { updateState() },
-                            changeGameState = { y, x -> changeGameState(y, x) }
-                        )
+                            changeGameState = { y, x -> changeGameState(y, x) })
 
                     }
                 }
@@ -123,91 +123,8 @@ fun BoardScreen(
 @Preview
 @Composable
 fun BoardPreview() {
-    BoardScreen(
-        state = BoardState(
-            currentTurnImageID = R.drawable.cross,
-            currentScore = ScoreModel(
-                score = mutableMapOf(
-                    Figure.CROSS to 0,
-                    Figure.CIRCLE to 1,
-                    Figure.TRIANGLE to 1,
-                    Figure.RECTANGLE to 1
-                )
-            ),
-            boardSize = BoardSize.BIG,
-            gameMode = GameMode.VS_PLAYER,
-            shapeOfAI = Figure.CIRCLE,
-            imagesIDs = Figure.values().map { it },
-            contentBoard = listOf(
-                listOf(
-                    CellState(imageID = R.drawable.circle, crossed = true),
-                    CellState(imageID = R.drawable.circle, crossed = true),
-                    CellState(imageID = R.drawable.circle, crossed = true),
-                    CellState(imageID = 0, crossed = false),
-                    CellState(imageID = 0, crossed = false),
-                    CellState(imageID = 0, crossed = false),
-                    CellState(imageID = 0, crossed = false),
-                ),
-                listOf(
-                    CellState(imageID = 0, crossed = false),
-                    CellState(imageID = 0, crossed = false),
-                    CellState(imageID = 0, crossed = false),
-                    CellState(imageID = 0, crossed = false),
-                    CellState(imageID = 0, crossed = false),
-                    CellState(imageID = 0, crossed = false),
-                    CellState(imageID = 0, crossed = false),
-                ),
-                listOf(
-                    CellState(imageID = R.drawable.cross, crossed = false),
-                    CellState(imageID = R.drawable.cross, crossed = false),
-                    CellState(imageID = 0, crossed = false),
-                    CellState(imageID = R.drawable.cross, crossed = false),
-                    CellState(imageID = R.drawable.triangle, crossed = true),
-                    CellState(imageID = R.drawable.triangle, crossed = true),
-                    CellState(imageID = R.drawable.triangle, crossed = true),
-                ),
-                listOf(
-                    CellState(imageID = 0, crossed = false),
-                    CellState(imageID = 0, crossed = false),
-                    CellState(imageID = R.drawable.rectangle, crossed = true),
-                    CellState(imageID = 0, crossed = false),
-                    CellState(imageID = 0, crossed = false),
-                    CellState(imageID = 0, crossed = false),
-                    CellState(imageID = 0, crossed = false),
-                ),
-                listOf(
-                    CellState(imageID = 0, crossed = false),
-                    CellState(imageID = 0, crossed = false),
-                    CellState(imageID = R.drawable.rectangle, crossed = true),
-                    CellState(imageID = 0, crossed = false),
-                    CellState(imageID = 0, crossed = false),
-                    CellState(imageID = 0, crossed = false),
-                    CellState(imageID = 0, crossed = false),
-                ),
-                listOf(
-                    CellState(imageID = 0, crossed = false),
-                    CellState(imageID = 0, crossed = false),
-                    CellState(imageID = R.drawable.rectangle, crossed = true),
-                    CellState(imageID = 0, crossed = false),
-                    CellState(imageID = 0, crossed = false),
-                    CellState(imageID = 0, crossed = false),
-                    CellState(imageID = 0, crossed = false),
-                ),
-                listOf(
-                    CellState(imageID = 0, crossed = false),
-                    CellState(imageID = 0, crossed = false),
-                    CellState(imageID = 0, crossed = false),
-                    CellState(imageID = 0, crossed = false),
-                    CellState(imageID = 0, crossed = false),
-                    CellState(imageID = 0, crossed = false),
-                    CellState(imageID = 0, crossed = false),
-                ),
-
-                )
-
-        ),
+    BoardScreen(state = PreviewStates.BOARD_STATE,
         simulateMoveOfAI = {},
         updateState = {},
-        changeGameState = { _, _ -> }
-    )
+        changeGameState = { _, _ -> })
 }

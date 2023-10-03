@@ -30,14 +30,14 @@ class GameWindowViewModel @Inject constructor(
     private val handlePlayerMoveUseCase: HandlePlayerMoveUseCase,
     private val getContentBoardUseCase: GetContentBoardUseCase,
     private val getGameStatusUseCase: GetGameStatusUseCase,
-    ) :
-    ViewModel() {
+) : ViewModel() {
 
     private val _state = mutableStateOf(GameState())
 
     val state: State<GameState> = _state
 
     init {
+//        restartGame()
         getState()
     }
 
@@ -47,16 +47,16 @@ class GameWindowViewModel @Inject constructor(
         val gameStatus = getGameStatusUseCase.execute()
         val boardState = getBoardStateUseCase.execute()
 
-        _state.value.gameOver = gameStatus.gameOverStatus
-
-        _state.value.boardState = BoardState(
-            currentTurnImageID = boardState.currentTurn.currentTurnShape.imageID,
-            currentScore = boardState.currentScore,
-            boardSize = boardState.boardSize,
-            gameMode = boardState.gameMode,
-            shapeOfAI = boardState.shapeOfAI,
-            imagesIDs = boardState.imagesIDs,
-            contentBoard = getContentBoard(),
+        _state.value = GameState(
+            gameOver = gameStatus.gameOverStatus, boardState = BoardState(
+                currentTurnImageID = boardState.currentTurn.currentTurnShape.imageID,
+                currentScore = boardState.currentScore,
+                boardSize = boardState.boardSize,
+                gameMode = boardState.gameMode,
+                shapeOfAI = boardState.shapeOfAI,
+                imagesIDs = boardState.imagesIDs,
+                contentBoard = getContentBoard(),
+            )
         )
     }
 
@@ -82,8 +82,7 @@ class GameWindowViewModel @Inject constructor(
         return board.map { row ->
             row.map { cell ->
                 CellState(
-                    imageID = cell.image,
-                    crossed = cell.crossed
+                    imageID = cell.image, crossed = cell.crossed
                 )
             }
         }

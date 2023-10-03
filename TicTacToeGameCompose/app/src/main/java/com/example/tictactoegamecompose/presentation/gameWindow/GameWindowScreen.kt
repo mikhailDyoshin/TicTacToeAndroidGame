@@ -38,11 +38,9 @@ fun GameWindowScreen(
 
     LaunchedEffect(state) {
         if (state.gameOver) {
-            restartGame()
             navigateToGameOverWindow()
         }
     }
-
 
     Column {
         Row(
@@ -55,7 +53,6 @@ fun GameWindowScreen(
             IconButton(
                 onClick = {
                     navigateToSettingsWindow()
-                    restartGame()
                 },
                 modifier = Modifier
             ) {
@@ -86,7 +83,8 @@ fun GameWindowScreen(
         }
 
         Column(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .fillMaxHeight()
                 .padding(top = 80.dp),
             verticalArrangement = Arrangement.SpaceBetween,
@@ -100,7 +98,6 @@ fun GameWindowScreen(
             )
         }
     }
-
 
 }
 
